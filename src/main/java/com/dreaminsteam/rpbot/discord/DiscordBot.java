@@ -1,8 +1,11 @@
 package com.dreaminsteam.rpbot.discord;
 
 
+import java.util.List;
+
 import de.btobastian.sdcf4j.CommandExecutor;
 import de.btobastian.sdcf4j.CommandHandler;
+import de.btobastian.sdcf4j.CommandHandler.SimpleCommand;
 import de.btobastian.sdcf4j.handler.Discord4JHandler;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
@@ -42,5 +45,11 @@ public class DiscordBot{
 		}
 		cmdHandler.registerCommand(commandExecutor);
 	}
+	
+	public List<SimpleCommand> getCommands(){
+		return cmdHandler.getCommands();
+	}
+	
+	
 	
 }

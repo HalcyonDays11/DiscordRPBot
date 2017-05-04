@@ -1,11 +1,15 @@
 package com.dreaminsteam.rpbot;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
+import java.util.Set;
 
-import com.dreaminsteam.rpbot.commands.PingCommand;
-import com.dreaminsteam.rpbot.commands.SimpleRollCommand;
+import org.reflections.Reflections;
+
 import com.dreaminsteam.rpbot.discord.DiscordBot;
+
+import de.btobastian.sdcf4j.CommandExecutor;
 
 public class RPBot {
 	
@@ -16,7 +20,7 @@ public class RPBot {
 	private DiscordBot bot;
 	private Properties secrets = null;
 	
-	public boolean setup(){
+	public boolean setup() throws Exception{
 		setupSecrets();
 		if(secrets == null){
 			System.out.println("!!No secrets file exists!!");
@@ -30,8 +34,12 @@ public class RPBot {
 		bot = new DiscordBot();
 		bot.connectToServer(secretToken);
 		
-		bot.registerCommand(new PingCommand());
-		bot.registerCommand(new SimpleRollCommand());
+		Reflections reflect = new Reflections("com.dreaminsteam.rpbot.commands");
+		Class<CommandExecutor> exec = (Class<CommandExecutor>) Class.forName("de.btobastian.sdcf4j.CommandExecutor");
+		Set<Class<? extends CommandExecutor>> subTypesOf = reflect.getSubTypesOf(exec);
+		for (Class <? extends CommandExecutor> klass : subTypesOf){
+			bot.registerCommand(klass.getConstructor().newInstance());
+		}
 		return true;
 	}
 	
@@ -48,7 +56,11 @@ public class RPBot {
 		bot.disconnect();
 	}
 	
-	public static void main(String[] args){
+	public static DiscordBot getBotInstance(){
+		return instance.bot;
+	}
+	
+	public static void main(String[] args) throws Exception {
 		instance = new RPBot();
 		boolean setup = instance.setup();
 		if(!setup){
