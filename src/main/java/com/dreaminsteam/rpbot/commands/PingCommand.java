@@ -17,6 +17,6 @@ public class PingCommand implements CommandExecutor{
 		//args 		= the message, minus the command, tokenized by spaces
 		
 		//Return whatever you want to respond with
-		return "Pong!";
+		return "Pongs!";
 	}
 }
