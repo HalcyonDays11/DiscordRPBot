@@ -8,7 +8,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class DebugCommand implements CommandExecutor {
 
-	@Command(aliases = {"!debug"}, description="Debug Info", async = true)
+	@Command(aliases = {"!debug"}, description="Debug Info", usage = "!debug [any number of args]", async = true)
 	public String debug(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		StringBuilder sb = new StringBuilder();
 		

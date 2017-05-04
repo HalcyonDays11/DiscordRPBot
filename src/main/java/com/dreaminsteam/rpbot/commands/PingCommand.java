@@ -8,7 +8,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class PingCommand implements CommandExecutor{
 
-	@Command(aliases = {"!ping"}, description="Simple Test Command", async = true)
+	@Command(aliases = {"!ping"}, description="Simple Test Command, should return \"Pongs!\"", usage = "!ping", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		//channel 	= the channel the command was sent on
 		//user		= the user who sent the message

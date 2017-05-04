@@ -13,7 +13,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class SimpleRollCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!roll"}, description = "Dice roll test!", async = true)
+	@Command(aliases = {"!roll"}, description = "Simple dice roll command", usage = "!roll [n]d[m], e.g. !roll 4d8",  async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		String diceFormula = args[0];
 		List<Integer> rollThemBones = DiceRoller.rollThemBones(diceFormula);
