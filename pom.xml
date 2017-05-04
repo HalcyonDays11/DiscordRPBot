@@ -36,7 +36,6 @@
   	<dependency>
     <groupId>org.reflections</groupId>
     <artifactId>reflections</artifactId>
-    <version>0.9.11</version>
 </dependency>
   </dependencies>
   <dependencyManagement>
@@ -55,6 +54,11 @@
   			<groupId>de.btobastian.sdcf4j</groupId>
   			<artifactId>sdcf4j-discord4j</artifactId>
   			<version>1.0.4</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.reflections</groupId>
+  			<artifactId>reflections</artifactId>
+  			<version>0.9.11</version>
   		</dependency>
   	</dependencies>
   </dependencyManagement>
