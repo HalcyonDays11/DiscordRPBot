@@ -3,6 +3,7 @@ package com.dreaminsteam.rpbot;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.dreaminsteam.rpbot.commands.DebugCommand;
 import com.dreaminsteam.rpbot.commands.PingCommand;
 import com.dreaminsteam.rpbot.commands.SimpleRollCommand;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
@@ -32,6 +33,7 @@ public class RPBot {
 		
 		bot.registerCommand(new PingCommand());
 		bot.registerCommand(new SimpleRollCommand());
+		bot.registerCommand(new DebugCommand());
 		return true;
 	}
 	
