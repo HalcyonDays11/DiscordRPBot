@@ -31,26 +31,27 @@ public class DiceFormula {
 	}
 	
 	public RollResult rollDiceWithModifiers(boolean withAdvantage, boolean withBurden, boolean inCombat){
+		int normalDie = die.ordinal(); //finds the number of the current die in the enumeration
+		int standardModifier = defaultModifier; //This is what you would normally get.
+		
+		
+		int dieToRoll = normalDie;
+		int modifier = standardModifier;
+		
 		if(withAdvantage){
-			int currentDie = die.ordinal(); //finds the number of the current die in the list
-			int newDie = Math.max(currentDie+1, 8); //defines the new die, which is the current die+1, no greater than the 8th option
-			DiceType dice = DiceType.values()[newDie]; //this assigns a name "dice" to the new die
-			
-			String formula = "1d" + dice.getDieValue(); //go to that list below and pull the value that's in the ()
-			List<Integer> rollThemBones = DiceRoller.rollThemBones(formula);
-			return new RollResult(rollThemBones, defaultModifier);
-		}
-		if(withBurden){
-			String formula = "1d" + die.getDieValue();
-			List<Integer> rollThemBones = DiceRoller.rollThemBones(formula);
-			return new RollResult(rollThemBones, 0);
+			dieToRoll = Math.min(normalDie+1, DiceType.values().length - 1); //Defines the new die, which is the current die+1, no greater than the max dice option.
 		}
 		if(inCombat){
-			String formula = "1d" + die.getDieValue();
-			List<Integer> rollThemBones = DiceRoller.rollThemBones(formula);
-			return new RollResult(rollThemBones, 0);
+			modifier = 0;
 		}
-		return rollDiceDefault();
+		if(withBurden){
+			modifier = modifier - 1;
+		}
+		
+		DiceType die = DiceType.values()[dieToRoll];
+		String formula = "1d" + die.getDieValue();
+		List<Integer> dieRoll = DiceRoller.rollThemBones(formula);
+		return new RollResult(dieRoll, modifier);
 	}
 	
 	public static enum DiceType{ //list of DiceType. defined as name (D4) value (4) and placement in the list (0)
