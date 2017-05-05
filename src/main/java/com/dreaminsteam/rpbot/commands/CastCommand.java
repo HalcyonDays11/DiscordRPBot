@@ -36,16 +36,18 @@ public class CastCommand implements CommandExecutor{
 		StringBuilder ret = new StringBuilder();
 		
 		if(result.getTotal() >= difficultyCheck){
-			ret.append("Spell success! ");
+			ret.append("**Spell success! **");
 		}else{
 			if(result.getTheoreticalTotal() >= difficultyCheck){
-				ret.append("Sell missed! ");
+				ret.append("**Sell missed! **");
 			}else{
-				ret.append("Spell failed! ");
+				ret.append("**Spell failed! **");
 			}
 		}
-		ret.append("Using " + result.getRollFormula() + "... ");
-		ret.append(result.getDiceRolls().toString() + (result.getModifier() > 0 ? " + " : " - ") + Math.abs(result.getModifier()) + " = " + result.getTotal() + "  (Target was " + difficultyCheck + ")");
+		ret.append("(You rolled **" + result.getTotal() + "**. Target was " + difficultyCheck + ".)\n");
+		ret.append("Die Roll " + result.getRollFormula() + " = " + result.getDiceRolls().toString() + "\n");
+		ret.append("Modifier = " + (result.getModifier() > 0 ? "+" : "-") + Math.abs(result.getModifier()) + "\n");
+		ret.append("Spell Practice Bonus = " + "I don't think this has a thing yet?");
 		
 		return ret.toString();
 	}
