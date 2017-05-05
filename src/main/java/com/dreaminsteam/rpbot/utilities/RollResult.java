@@ -8,20 +8,35 @@ public class RollResult {
 
 	private final List<Integer> diceRolls;
 	private int modifier;
+	private String rollFormula;
 	
-	public RollResult(List<Integer> diceRolls){
-		this(diceRolls, 0);
+	private int theoreticalModifier;
+	
+	public RollResult(String rollFormula, List<Integer> diceRolls){
+		this(rollFormula, diceRolls, 0, 0);
 	}
 	
-	public RollResult(List<Integer> diceRolls, int modifier){
+	public RollResult(String rollFormula, List<Integer> diceRolls, int modifier){
+		this(rollFormula, diceRolls, modifier, modifier);
+	}
+	
+	public RollResult(String rollFormula, List<Integer> diceRolls, int modifier, int theoreticalModifier){
+		this.rollFormula = rollFormula;
 		this.diceRolls = diceRolls;
 		this.modifier = modifier;
+		this.theoreticalModifier = theoreticalModifier;
 	}
 	
 	public int getTotal(){
 		AtomicInteger result = new AtomicInteger(0);
 		diceRolls.stream().forEach(die -> result.addAndGet(die));
 		return result.addAndGet(modifier);
+	}
+	
+	public int getTheoreticalTotal(){
+		AtomicInteger result = new AtomicInteger(0);
+		diceRolls.stream().forEach(die -> result.addAndGet(die));
+		return result.addAndGet(theoreticalModifier);
 	}
 	
 	public List<Integer> getDiceRolls(){
@@ -34,5 +49,21 @@ public class RollResult {
 	
 	public void setModifier(int modifier){
 		this.modifier = modifier;
+	}
+
+	public String getRollFormula() {
+		return rollFormula;
+	}
+
+	public void setRollFormula(String rollFormula) {
+		this.rollFormula = rollFormula;
+	}
+
+	public int getTheoreticalModifier() {
+		return theoreticalModifier;
+	}
+
+	public void setTheoreticalModifier(int theoreticalModifier) {
+		this.theoreticalModifier = theoreticalModifier;
 	}
 }
