@@ -27,13 +27,13 @@ public class DiceFormula {
 	public RollResult rollDiceDefault(){
 		String formula = "1d" + die.getDieValue(); //go to that list below and pull the value that's in the ()
 		List<Integer> rollThemBones = DiceRoller.rollThemBones(formula); 
-		return new RollResult(rollThemBones, defaultModifier);
+		return new RollResult(formula, rollThemBones, defaultModifier);
 	}
 	
 	public RollResult rollDiceWithModifiers(boolean withAdvantage, boolean withBurden, boolean inCombat){
 		int normalDie = die.ordinal(); //finds the number of the current die in the enumeration
 		int standardModifier = defaultModifier; //This is what you would normally get.
-		
+		int maxModifier = defaultModifier; //This is what you could have, if not in combat.
 		
 		int dieToRoll = normalDie;
 		int modifier = standardModifier;
@@ -46,12 +46,13 @@ public class DiceFormula {
 		}
 		if(withBurden){
 			modifier = modifier - 1;
+			maxModifier = maxModifier - 1;
 		}
 		
 		DiceType die = DiceType.values()[dieToRoll];
 		String formula = "1d" + die.getDieValue();
 		List<Integer> dieRoll = DiceRoller.rollThemBones(formula);
-		return new RollResult(dieRoll, modifier);
+		return new RollResult(formula, dieRoll, modifier, maxModifier);
 	}
 	
 	public static enum DiceType{ //list of DiceType. defined as name (D4) value (4) and placement in the list (0)
