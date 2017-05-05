@@ -42,8 +42,12 @@
   		<artifactId>h2</artifactId>
   	</dependency>
   	<dependency>
-  		<groupId>com.j256</groupId>
-  		<artifactId>ormlite</artifactId>
+  		<groupId>com.j256.ormlite</groupId>
+  		<artifactId>ormlite-jdbc</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.j256.ormlite</groupId>
+  		<artifactId>ormlite-core</artifactId>
   	</dependency>
   </dependencies>
   <dependencyManagement>
@@ -74,9 +78,14 @@
   			<version>1.4.195</version>
   		</dependency>
   		<dependency>
-  			<groupId>com.j256</groupId>
-  			<artifactId>ormlite</artifactId>
-  			<version>3.0</version>
+  			<groupId>com.j256.ormlite</groupId>
+  			<artifactId>ormlite-jdbc</artifactId>
+  			<version>5.0</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.j256.ormlite</groupId>
+  			<artifactId>ormlite-core</artifactId>
+  			<version>5.0</version>
   		</dependency>
   	</dependencies>
   </dependencyManagement>

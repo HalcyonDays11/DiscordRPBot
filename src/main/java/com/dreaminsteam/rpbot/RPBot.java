@@ -5,8 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.Set;
 
+import org.h2.engine.Database;
 import org.reflections.Reflections;
 
+import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
 
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -40,6 +42,9 @@ public class RPBot {
 		for (Class <? extends CommandExecutor> klass : subTypesOf){
 			bot.registerCommand(klass.getConstructor().newInstance());
 		}
+		
+		DatabaseUtil.setupConnection();
+		DatabaseUtil.setupTestDb();
 		return true;
 	}
 	

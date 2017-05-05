@@ -12,13 +12,15 @@ public class DebugCommand implements CommandExecutor {
 	public String debug(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("User: " + user.getName());
+		sb.append("**User:** " + user.getName());
 		sb.append("\n");
-		sb.append("channel: " + channel.getName());
+		sb.append("**Snowflake id:** " + user.getLongID());
 		sb.append("\n");
-		sb.append("command:" + command);
+		sb.append("**channel:** " + channel.getName());
 		sb.append("\n");
-		sb.append("arguments: " + args.length);
+		sb.append("**command:**" + command);
+		sb.append("\n");
+		sb.append("**arguments:** " + args.length);
 		for (String arg : args){
 			sb.append("\t" + arg + "\n");
 		}
