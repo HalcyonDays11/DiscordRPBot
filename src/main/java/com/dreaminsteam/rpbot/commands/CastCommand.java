@@ -20,6 +20,7 @@ public class CastCommand implements CommandExecutor{
 		int difficultyCheck = 12;
 		
 		String spell = args[0];
+		spell = spell.toLowerCase();
 		
 		String spellModifiers = "";
 		if(args.length > 1){
@@ -44,7 +45,8 @@ public class CastCommand implements CommandExecutor{
 				ret.append("**Spell failed! **");
 			}
 		}
-		ret.append(" (You rolled **" + result.getTotal() + "** (DC " + difficultyCheck + "). *" + result.getRollFormula() + " =* ***" + result.getDiceRolls().toString() + (result.getModifier() > 0 ? " +" : " -") + Math.abs(result.getModifier()) + " + I don't think this has a thing yet?***");
+		ret.append("(You rolled **" + result.getTotal() + "** , DC " + difficultyCheck + ")");
+		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + (result.getModifier() > 0 ? " +" : " -") + Math.abs(result.getModifier()) + " + I don't think this has a thing yet?***");
 
 		return ret.toString();
 	}
