@@ -44,11 +44,8 @@ public class CastCommand implements CommandExecutor{
 				ret.append("**Spell failed! **");
 			}
 		}
-		ret.append("(You rolled **" + result.getTotal() + "**. Target was " + difficultyCheck + ".)\n");
-		ret.append("Die Roll " + result.getRollFormula() + " = " + result.getDiceRolls().toString() + "\n");
-		ret.append("Modifier = " + (result.getModifier() > 0 ? "+" : "-") + Math.abs(result.getModifier()) + "\n");
-		ret.append("Spell Practice Bonus = " + "I don't think this has a thing yet?");
-		
+		ret.append(" (You rolled **" + result.getTotal() + "** (DC " + difficultyCheck + "). *" + result.getRollFormula() + " =* ***" + result.getDiceRolls().toString() + (result.getModifier() > 0 ? " +" : " -") + Math.abs(result.getModifier()) + " + I don't think this has a thing yet?***");
+
 		return ret.toString();
 	}
 
