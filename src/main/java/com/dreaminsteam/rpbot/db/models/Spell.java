@@ -6,10 +6,10 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "spells")
 public class Spell {
 	
-	@DatabaseField(id = true) private String incantation;
-	@DatabaseField private String spellName;
-	@DatabaseField private String description;
-	@DatabaseField private int difficultyCheck;
+	@DatabaseField(id = true) private String incantation = "";
+	@DatabaseField private String name = "";
+	@DatabaseField private String description = "";
+	@DatabaseField private int dc = -1;
 	
 	public Spell(){
 		//ORMLite requires an empty constructor.
@@ -23,12 +23,12 @@ public class Spell {
 		this.incantation = incantation;
 	}
 
-	public String getSpellName() {
-		return spellName;
+	public String getName() {
+		return name;
 	}
 
-	public void setSpellName(String spellName) {
-		this.spellName = spellName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {
@@ -39,22 +39,22 @@ public class Spell {
 		this.description = description;
 	}
 
-	public int getDifficultyCheck() {
-		return difficultyCheck;
+	public int getDC() {
+		return dc;
 	}
 
-	public void setDifficultyCheck(int difficultyCheck) {
-		this.difficultyCheck = difficultyCheck;
+	public void setDC(int dc) {
+		this.dc = dc;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + dc;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + difficultyCheck;
 		result = prime * result + ((incantation == null) ? 0 : incantation.hashCode());
-		result = prime * result + ((spellName == null) ? 0 : spellName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -67,22 +67,22 @@ public class Spell {
 		if (getClass() != obj.getClass())
 			return false;
 		Spell other = (Spell) obj;
+		if (dc != other.dc)
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
-			return false;
-		if (difficultyCheck != other.difficultyCheck)
 			return false;
 		if (incantation == null) {
 			if (other.incantation != null)
 				return false;
 		} else if (!incantation.equals(other.incantation))
 			return false;
-		if (spellName == null) {
-			if (other.spellName != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!spellName.equals(other.spellName))
+		} else if (!name.equals(other.name))
 			return false;
 		return true;
 	}

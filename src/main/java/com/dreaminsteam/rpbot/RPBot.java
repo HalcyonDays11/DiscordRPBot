@@ -9,6 +9,7 @@ import org.h2.engine.Database;
 import org.reflections.Reflections;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
+import com.dreaminsteam.rpbot.db.SpellParser;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
 
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -44,7 +45,8 @@ public class RPBot {
 		}
 		
 		DatabaseUtil.setupConnection();
-		DatabaseUtil.setupTestDb();
+//		DatabaseUtil.setupTestDb();
+		SpellParser.parseSpells();
 		return true;
 	}
 	

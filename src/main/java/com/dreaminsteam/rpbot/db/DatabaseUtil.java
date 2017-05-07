@@ -29,9 +29,9 @@ public class DatabaseUtil {
 		if (!playerDao.isTableExists()){
 			TableUtils.createTable(playerDao);
 		}
-		if (!spellDao.isTableExists()){
-			TableUtils.createTable(spellDao);
-		}
+//		if (!spellDao.isTableExists()){
+//			TableUtils.createTable(spellDao);
+//		}
 		
 //		Player kat = new Player();
 //		kat.setSnowflakeId("1234");
@@ -55,6 +55,10 @@ public class DatabaseUtil {
 	
 	public static void disconnect() throws Exception{
 		connectionSource.close();
+	}
+	
+	public static ConnectionSource getConnectionSource() {
+		return connectionSource;
 	}
 
 	
