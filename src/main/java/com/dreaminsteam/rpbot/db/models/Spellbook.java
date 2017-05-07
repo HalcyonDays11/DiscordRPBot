@@ -11,6 +11,7 @@ public class Spellbook {
 	
 	public static final int POINTS_PER_BONUS = 3;
 	public static final int DEFAULT_MAX_BONUS = 3;
+	public static final int MAX_ATTEMPTS_PER_DAY = 3;
 	
 	@DatabaseField(foreign=true, columnName="player_id", foreignAutoRefresh=true)
 	private Player player;
@@ -22,6 +23,7 @@ public class Spellbook {
 	@DatabaseField private int currentIndividualModifierPoints = 0;
 	@DatabaseField private int castAttemptsToday = 0;
 	@DatabaseField private Date lastCastAttempt;
+	@DatabaseField private boolean practiceSuccessful;
 	
 	public Spellbook(){
 		//ORMLite requires an empty constructor
@@ -56,23 +58,63 @@ public class Spellbook {
 		}
 	}
 	
-	public void practiceSpell(){
+	public void practiceSpell(boolean success){
 		Date now = new Date();
 		boolean practiced = false;
 		if(hasPracticedToday(now)){
-			if(castAttemptsToday < 3){
+			if(!practiceSuccessful && castAttemptsToday < MAX_ATTEMPTS_PER_DAY){
 				castAttemptsToday++;
-				currentIndividualModifierPoints++;
 				practiced = true;
 			}
 		}else{
 			castAttemptsToday = 1;
-			currentIndividualModifierPoints++;
 			practiced = true;
 		}
+		
 		if(practiced){
 			lastCastAttempt = now;
+			practiceSuccessful = success;
+			if(practiceSuccessful){
+				currentIndividualModifierPoints++;
+			}
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((player == null) ? 0 : player.hashCode());
+		result = prime * result + ((spell == null) ? 0 : spell.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Spellbook other = (Spellbook) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (player == null) {
+			if (other.player != null)
+				return false;
+		} else if (!player.equals(other.player))
+			return false;
+		if (spell == null) {
+			if (other.spell != null)
+				return false;
+		} else if (!spell.equals(other.spell))
+			return false;
+		return true;
 	}
 
 }
