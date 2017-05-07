@@ -13,8 +13,9 @@ public class LookupCommand implements CommandExecutor{
 		String spell = args[0];
 		spell = spell.toLowerCase();
 		
-		StringBuilder ret = new StringBuilder();
 		
+		
+		StringBuilder ret = new StringBuilder();
 		return ret.toString();
 	}
 
