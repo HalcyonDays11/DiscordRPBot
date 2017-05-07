@@ -62,8 +62,6 @@ public class LookupCommand implements CommandExecutor{
 			
 			return sb.toString();
 		}
-		
-		
 	}
 
 }
