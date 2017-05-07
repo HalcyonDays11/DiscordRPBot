@@ -50,6 +50,7 @@ public class SpellParser {
 					field.setAccessible(true);
 					if (String.class.equals(field.getType())){
 						if (Spell.class.getDeclaredField("incantation").equals(field)){
+							spell.setPrettyIncantation(text);
 							text = text.trim().toLowerCase().replace(" ", "_");
 						}
 						field.set(spell, text);

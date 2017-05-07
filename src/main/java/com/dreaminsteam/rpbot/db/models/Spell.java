@@ -7,6 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Spell {
 	
 	@DatabaseField(id = true) private String incantation = "";
+	@DatabaseField private String prettyIncantation;
 	@DatabaseField private String name = "";
 	@DatabaseField private String description = "";
 	@DatabaseField private int dc = -1;
@@ -21,6 +22,14 @@ public class Spell {
 
 	public void setIncantation(String incantation) {
 		this.incantation = incantation;
+	}
+
+	public String getPrettyIncantation() {
+		return prettyIncantation;
+	}
+
+	public void setPrettyIncantation(String prettyIncantation) {
+		this.prettyIncantation = prettyIncantation;
 	}
 
 	public String getName() {

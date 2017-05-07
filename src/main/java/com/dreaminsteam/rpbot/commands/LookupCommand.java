@@ -32,33 +32,34 @@ public class LookupCommand implements CommandExecutor{
 				ret.append("\n");
 			}
 			allSpells.close();
-			return ret.toString();
+			apiClient.getOrCreatePMChannel(user).sendMessage(ret.toString());
+			return null;
 		}  else {
 			String spellName = args[0];
 			List<Spell> queryForEq = DatabaseUtil.getSpellDao().queryForEq("incantation", spellName.trim().toLowerCase().replace(" ", "_"));
 			
 			if (queryForEq == null || queryForEq.size() != 1){
-				return "spell \"" + spellName + "\" not found";
+				return "**Spell Not Found!** \"" + spellName + "\" doesn't appear in the spell list.";
 			}
 			Spell spell = queryForEq.get(0);
 			if (spell == null){
-				return "spell \"" + spellName + "\" not found";
+				return "**Spell Not Found!** \"" + spellName + "\" doesn't appear in the spell list.";
 			}
 			
 			StringBuilder sb = new StringBuilder();
 			
-			sb.append(spell.getIncantation());
+			sb.append("**" + spell.getPrettyIncantation());
 			if (!"".equals(spell.getName())){
-				sb.append(" - " + spell.getName());
+				sb.append(", " + spell.getName());
 			}
-			sb.append("\n");
-			
-			if (!"".equals(spell.getDescription())){
-				sb.append(spell.getDescription() + "\n");
-			}
+			sb.append("** ");
 			
 			if (spell.getDC() > 0){
-				sb.append("(DC " + spell.getDC() + ")\n");
+				sb.append(" (DC " + spell.getDC() + ")  ");
+			}
+			
+			if (!"".equals(spell.getDescription())){
+				sb.append(spell.getDescription());
 			}
 			
 			return sb.toString();
