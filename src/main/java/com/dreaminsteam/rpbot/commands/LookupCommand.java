@@ -1,10 +1,12 @@
 package com.dreaminsteam.rpbot.commands;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Spell;
 import com.j256.ormlite.dao.CloseableIterator;
+import com.j256.ormlite.dao.Dao;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -16,7 +18,6 @@ public class LookupCommand implements CommandExecutor{
 	
 	@Command(aliases = {"!lookup"}, description="Lookup spell information and DC.", usage = "!lookup [spellIncantation]")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
-		
 		
 		if (args.length == 0){
 			StringBuilder ret = new StringBuilder();
