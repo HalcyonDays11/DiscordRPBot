@@ -48,11 +48,11 @@ public class LookupCommand implements CommandExecutor{
 			
 			StringBuilder sb = new StringBuilder();
 			
-			sb.append("**" + spell.getPrettyIncantation());
+			sb.append("**" + spell.getPrettyIncantation() + "**");
 			if (!"".equals(spell.getName())){
-				sb.append(", " + spell.getName());
+				sb.append(", *" + spell.getName());
 			}
-			sb.append("** ");
+			sb.append("* ");
 			
 			if (spell.getDC() > 0){
 				sb.append(" (DC " + spell.getDC() + ")  ");
