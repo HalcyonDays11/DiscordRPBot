@@ -39,7 +39,11 @@ public class Spellbook {
 	}
 	
 	public int getIndividualModifier(int maxModifier){
-		return Math.min(maxModifier, currentIndividualModifierPoints/3);
+		return Math.min(maxModifier, currentIndividualModifierPoints/POINTS_PER_BONUS);
+	}
+	
+	public int getProgressTowardsNextBonus(){
+		return currentIndividualModifierPoints % POINTS_PER_BONUS;
 	}
 	
 	public boolean hasPracticedToday(Date today){
