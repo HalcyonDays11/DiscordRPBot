@@ -16,7 +16,7 @@ public class ListPlayersCommand implements CommandExecutor{
 		StringBuilder sb = new StringBuilder();
 		sb.append("current players: \n");
 		for (Player player : DatabaseUtil.getPlayerDao().queryForAll()) {
-			sb.append("**" + player.getName() + "**: " + player.getSnowflakeId() + "\n");
+			sb.append("**" + player.getName() + "**: " + player.getSnowflakeId() + ", " + player.getCurrentYear().getPrettyName() + "\n");
 		}
 		
 		return sb.toString();

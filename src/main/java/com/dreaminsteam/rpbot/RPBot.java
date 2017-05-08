@@ -45,7 +45,7 @@ public class RPBot {
 		}
 		
 		DatabaseUtil.setupConnection();
-//		DatabaseUtil.setupTestDb();
+		DatabaseUtil.setupDbIfNecessary();
 		SpellParser.parseSpells();
 		return true;
 	}

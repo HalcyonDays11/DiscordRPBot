@@ -3,19 +3,6 @@ package com.dreaminsteam.rpbot.utilities;
 import java.util.List;
 
 public class DiceFormula {
-
-	public static final DiceFormula firstYearFormula = new DiceFormula(DiceType.D4, 0); //defines the different classes and what properties they have
-	public static final DiceFormula secondYearFormula = new DiceFormula(DiceType.D6, 1);
-	public static final DiceFormula thirdYearFormula = new DiceFormula(DiceType.D8, 2);
-	public static final DiceFormula forthYearFormula = new DiceFormula(DiceType.D10, 3);
-	public static final DiceFormula fifthYearFormula = new DiceFormula(DiceType.D12, 4);
-	public static final DiceFormula sixthYearFormula = new DiceFormula(DiceType.D14, 5);
-	public static final DiceFormula seventhYearFormula = new DiceFormula(DiceType.D16, 6);
-	public static final DiceFormula graduateAFormula = new DiceFormula(DiceType.D18, 7);
-	public static final DiceFormula graduateBFormula = new DiceFormula(DiceType.D18, 8);
-	public static final DiceFormula graduateCFormula = new DiceFormula(DiceType.D18, 9);
-	public static final DiceFormula masteryFormula = new DiceFormula(DiceType.D20, 10);
-	
 	private DiceType die; //names the properties
 	private int defaultModifier; 
 	

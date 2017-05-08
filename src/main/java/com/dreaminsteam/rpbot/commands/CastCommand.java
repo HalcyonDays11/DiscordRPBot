@@ -1,5 +1,8 @@
 package com.dreaminsteam.rpbot.commands;
 
+import com.dreaminsteam.rpbot.db.DatabaseUtil;
+import com.dreaminsteam.rpbot.db.models.Player;
+import com.dreaminsteam.rpbot.db.models.Spell;
 import com.dreaminsteam.rpbot.utilities.DiceFormula;
 import com.dreaminsteam.rpbot.utilities.RollResult;
 
@@ -13,14 +16,15 @@ public class CastCommand implements CommandExecutor{
 	
 	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, or in (C)ombat.", usage = "!cast [incantation] <A|B|C>, e.g. !cast lumos A", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
-		//For now, assume an interesting year
-		DiceFormula formula = DiceFormula.sixthYearFormula;
+		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
-		//For now, assume a mid level spell difficulty
-		int difficultyCheck = 12;
+		String spellStr = args[0];
+		spellStr = spellStr.toLowerCase();
 		
-		String spell = args[0];
-		spell = spell.toLowerCase();
+		Spell spell = DatabaseUtil.findSpell(spellStr);
+		if(spell == null){
+			return "**Spell Not Found!** \"" + spellStr + "\" doesn't appear in the spell list.";
+		}
 		
 		String spellModifiers = "";
 		if(args.length > 1){
@@ -32,10 +36,12 @@ public class CastCommand implements CommandExecutor{
 		boolean combat = spellModifiers.contains("c");
 		boolean burden = spellModifiers.contains("b");
 		
+		DiceFormula formula = player.getCurrentYear().getDiceFormula();
 		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat);
 		
 		StringBuilder ret = new StringBuilder();
 		
+		int difficultyCheck = spell.getDC();
 		if(result.getTotal() >= difficultyCheck){
 			ret.append("**Spell success! **");
 		}else{

@@ -3,6 +3,7 @@ package com.dreaminsteam.rpbot.db.models;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.dreaminsteam.rpbot.utilities.Year;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -12,6 +13,7 @@ public class Player {
 	@DatabaseField(id = true) private String snowflakeId; // This is a Discord thing.  It's the global, unique identifier for the user.
 	@DatabaseField private String name;
 	@DatabaseField private Date lastPracticedDate;
+	@DatabaseField private Year currentYear;
 	
 	public Player() {
 		//ORMLite requires an empty constructor.
@@ -36,6 +38,14 @@ public class Player {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Year getCurrentYear() {
+		return currentYear;
+	}
+	
+	public void setCurrentYear(Year currentYear) {
+		this.currentYear = currentYear;
 	}
 	
 	public boolean canPracticeToday(Date today){
