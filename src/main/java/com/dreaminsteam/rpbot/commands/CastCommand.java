@@ -10,6 +10,7 @@ import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 public class CastCommand implements CommandExecutor{
@@ -43,16 +44,16 @@ public class CastCommand implements CommandExecutor{
 		
 		int difficultyCheck = spell.getDC();
 		if(result.getTotal() >= difficultyCheck){
-			ret.append("**Spell success! **");
+			ret.append(user.mention() + " ** Spell Succeeds! **");
 		}else{
 			if(result.getTheoreticalTotal() >= difficultyCheck){
-				ret.append("**Sell missed! **");
+				ret.append(user.mention() + " ** Spell Missed! **");
 			}else{
-				ret.append("**Spell failed! **");
+				ret.append(user.mention() + " ** Spell Failed! **");
 			}
 		}
-		ret.append("(You rolled **" + result.getTotal() + "** , DC " + difficultyCheck + ")");
-		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + (result.getModifier() > 0 ? " +" : " -") + Math.abs(result.getModifier()) + " + I don't think this has a thing yet?***");
+		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
+		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + (result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + " + I don't think this has a thing yet?***");
 
 		return ret.toString();
 	}

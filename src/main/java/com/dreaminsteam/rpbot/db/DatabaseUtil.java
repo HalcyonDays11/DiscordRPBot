@@ -32,9 +32,14 @@ public class DatabaseUtil {
 		
 	}
 	
-	public static void setupDbIfNecessary() throws Exception{
+	public static void setupDbIfNecessary(boolean clearExisting) throws Exception{
 		if(!playerDao.isTableExists()){
 			TableUtils.createTable(playerDao);
+		}else{
+			if(clearExisting){
+				TableUtils.dropTable(playerDao, true);
+				TableUtils.createTable(playerDao);
+			}
 		}
 	}
 	
@@ -81,7 +86,7 @@ public class DatabaseUtil {
 			if(!playerList.isEmpty()){
 				player = playerList.get(0);
 			}else{
-				player = new Player(userObj.getName(), userObj.getStringID());
+				player = new Player(userObj.getStringID(), userObj.getName());
 			}
 			List<IRole> rolesForGuild = userObj.getRolesForGuild(guild);
 			List<String> roleNames = rolesForGuild.stream().map(role -> role.getName()).collect(Collectors.toList());
