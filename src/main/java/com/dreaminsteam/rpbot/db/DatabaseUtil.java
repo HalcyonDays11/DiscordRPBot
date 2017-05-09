@@ -125,7 +125,7 @@ public class DatabaseUtil {
 		} catch (SQLException e) {
 			System.out.println("Error querying for spellbook: ");
 			e.printStackTrace();
-			return null;
+			return new Spellbook(player, spell);
 		}
 	}
 	

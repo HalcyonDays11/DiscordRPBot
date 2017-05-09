@@ -3,6 +3,7 @@ package com.dreaminsteam.rpbot.commands;
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
+import com.dreaminsteam.rpbot.db.models.Spellbook;
 import com.dreaminsteam.rpbot.utilities.DiceFormula;
 import com.dreaminsteam.rpbot.utilities.RollResult;
 
@@ -30,6 +31,8 @@ public class CastCommand implements CommandExecutor{
 			return "**Spell Not Found!** \"" + spellStr + "\" doesn't appear in the spell list.";
 		}
 		
+		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
+		
 		String spellModifiers = "";
 		if(args.length > 1){
 			spellModifiers = args[1];
@@ -42,6 +45,7 @@ public class CastCommand implements CommandExecutor{
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
 		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat);
+		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
 		
 		StringBuilder ret = new StringBuilder();
 		
@@ -56,7 +60,7 @@ public class CastCommand implements CommandExecutor{
 			}
 		}
 		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
-		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + (result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + " + I don't think this has a thing yet?***");
+		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + (result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + " + " + result.getPersonalModifier() + "***");
 
 		return ret.toString();
 	}

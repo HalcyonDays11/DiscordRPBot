@@ -8,6 +8,7 @@ public class RollResult {
 
 	private final List<Integer> diceRolls;
 	private int modifier;
+	private int personalModifier;
 	private String rollFormula;
 	
 	private int theoreticalModifier;
@@ -30,17 +31,25 @@ public class RollResult {
 	public int getTotal(){
 		AtomicInteger result = new AtomicInteger(0);
 		diceRolls.stream().forEach(die -> result.addAndGet(die));
-		return result.addAndGet(modifier);
+		return result.addAndGet(modifier + personalModifier);
 	}
 	
 	public int getTheoreticalTotal(){
 		AtomicInteger result = new AtomicInteger(0);
 		diceRolls.stream().forEach(die -> result.addAndGet(die));
-		return result.addAndGet(theoreticalModifier);
+		return result.addAndGet(theoreticalModifier + personalModifier);
 	}
 	
 	public List<Integer> getDiceRolls(){
 		return new ArrayList<Integer>(diceRolls);
+	}
+	
+	public void setPersonalModifier(int personalModifier){
+		this.personalModifier = personalModifier;
+	}
+	
+	public int getPersonalModifier(){
+		return personalModifier;
 	}
 	
 	public int getModifier(){
