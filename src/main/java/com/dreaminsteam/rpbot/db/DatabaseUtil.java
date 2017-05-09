@@ -6,11 +6,14 @@ import java.util.stream.Collectors;
 
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
+import com.dreaminsteam.rpbot.db.models.Spellbook;
 import com.dreaminsteam.rpbot.utilities.Year;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.db.H2DatabaseType;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -22,6 +25,7 @@ public class DatabaseUtil {
 	
 	private static Dao<Spell, String> spellDao;
 	private static Dao<Player, String> playerDao;
+	private static Dao<Spellbook, Long> spellbookDao;
 	private static ConnectionSource connectionSource;
 	
 	public static void setupConnection() throws SQLException{
@@ -29,7 +33,7 @@ public class DatabaseUtil {
 		
 		spellDao = DaoManager.createDao(connectionSource, Spell.class);
 		playerDao = DaoManager.createDao(connectionSource, Player.class);
-		
+		spellbookDao = DaoManager.createDao(connectionSource, Spellbook.class);
 	}
 	
 	public static void setupDbIfNecessary(boolean clearExisting) throws Exception{
@@ -41,26 +45,15 @@ public class DatabaseUtil {
 				TableUtils.createTable(playerDao);
 			}
 		}
-	}
-	
-	public static void setupTestDb() throws Exception{
-		if (!playerDao.isTableExists()){
-			TableUtils.createTable(playerDao);
-		}
-//		if (!spellDao.isTableExists()){
-//			TableUtils.createTable(spellDao);
-//		}
 		
-//		Player kat = new Player();
-//		kat.setSnowflakeId("1234");
-//		kat.setName("Kat");
-//		
-//		Player jess = new Player();
-//		jess.setName("Jess");
-//		jess.setSnowflakeId("5678");
-//		
-//		playerDao.create(kat);
-//		playerDao.create(jess);
+		if(!spellbookDao.isTableExists()){
+			TableUtils.createTable(spellbookDao);
+		}else{
+			if(clearExisting){
+				TableUtils.dropTable(spellbookDao, true);
+				TableUtils.createTable(spellbookDao);
+			}
+		}
 	}
 	
 	public static Dao<Player, String> getPlayerDao() {
@@ -69,6 +62,9 @@ public class DatabaseUtil {
 	
 	public static Dao<Spell, String> getSpellDao() {
 		return spellDao;
+	}
+	public static Dao<Spellbook, Long> getSpellbookDao() {
+		return spellbookDao;
 	}
 	
 	public static void disconnect() throws Exception{
@@ -117,5 +113,29 @@ public class DatabaseUtil {
 		}
 	}
 
+	public static Spellbook getOrCreateSpellbook(Player player, Spell spell){
+		try {
+			QueryBuilder<Spellbook,Long> queryBuilder = getSpellbookDao().queryBuilder();
+			Where<Spellbook,Long> query = queryBuilder.where().eq("player_id", player.getSnowflakeId()).and().eq("spell_id", spell.getIncantation());
+			Spellbook spellbook = query.queryForFirst();
+			if(spellbook == null){
+				spellbook = new Spellbook(player, spell);
+			}
+			return spellbook;
+		} catch (SQLException e) {
+			System.out.println("Error querying for spellbook: ");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static void updateSpellbook(Spellbook spellbook){
+		try {
+			getSpellbookDao().createOrUpdate(spellbook);
+		} catch (SQLException e) {
+			System.out.println("Error saving spellbook: ");
+			e.printStackTrace();
+		}
+	}
 	
 }

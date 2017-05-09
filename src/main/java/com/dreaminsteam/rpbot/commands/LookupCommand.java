@@ -16,7 +16,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class LookupCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!lookup"}, description="Lookup spell information and DC.", usage = "!lookup [spellIncantation]")
+	@Command(aliases = {"!lookup"}, description="Lookup spell information and DC.", usage = "!lookup [spellIncantation]", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		
 		if (args.length == 0){

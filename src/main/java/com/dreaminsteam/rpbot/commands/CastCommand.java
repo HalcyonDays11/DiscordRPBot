@@ -20,6 +20,9 @@ public class CastCommand implements CommandExecutor{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		String spellStr = args[0];
+		if(spellStr == null){
+			return null;
+		}
 		spellStr = spellStr.toLowerCase();
 		
 		Spell spell = DatabaseUtil.findSpell(spellStr);
