@@ -56,14 +56,21 @@ public class Spellbook {
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		
 		if(calendar.after(today)){
-			return true;
-		}else{
 			return false;
+		}else{
+			return true;
 		}
 	}
 	
-	public void practiceSpell(boolean success){
-		Date now = new Date();
+	public boolean castAttemptsAtMax(){
+		return castAttemptsToday >= MAX_ATTEMPTS_PER_DAY;
+	}
+	
+	public int getCastAttemptsRemaining(){
+		return MAX_ATTEMPTS_PER_DAY - castAttemptsToday;
+	}
+	
+	public void practiceSpell(boolean success, Date now){
 		boolean practiced = false;
 		if(hasPracticedToday(now)){
 			if(!practiceSuccessful && castAttemptsToday < MAX_ATTEMPTS_PER_DAY){
