@@ -17,6 +17,10 @@ public class SpellbookCommand implements CommandExecutor{
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
+		if(args.length < 1){
+			return null;
+		}
+		
 		String spellStr = args[0];
 		if(spellStr == null){
 			return null;
@@ -34,12 +38,12 @@ public class SpellbookCommand implements CommandExecutor{
 			int progressTowardsNextBonus = spellbook.getProgressTowardsNextBonus();
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append(user.mention());
-			sb.append("  **" + spell.getPrettyIncantation() + "**  ");
+			sb.append("**" + spell.getPrettyIncantation() + "**  ");
 			sb.append("(DC" + spell.getDC() + ")  ");
 			sb.append("Personal modifier is **+" + individualModifier + "** with ");
 			sb.append(" **" + progressTowardsNextBonus + "/" + Spellbook.POINTS_PER_BONUS + "** towards next bonus.");
-			return sb.toString();
+			user.getOrCreatePMChannel().sendMessage(sb.toString());
+			return user.mention() + "Information has been PM'd to you.";
 		}
 		return null;
 		

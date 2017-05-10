@@ -46,6 +46,10 @@ public class Spellbook {
 		return currentIndividualModifierPoints % POINTS_PER_BONUS;
 	}
 	
+	public void setModifier(int modifier){
+		currentIndividualModifierPoints = (modifier * POINTS_PER_BONUS);
+	}
+	
 	public boolean hasPracticedToday(Date today){
 		if(lastCastAttempt == null){
 			return false;
