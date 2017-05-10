@@ -43,7 +43,7 @@ public class SpellbookCommand implements CommandExecutor{
 			sb.append("Personal modifier is **+" + individualModifier + "** with ");
 			sb.append(" **" + progressTowardsNextBonus + "/" + Spellbook.POINTS_PER_BONUS + "** towards next bonus.");
 			user.getOrCreatePMChannel().sendMessage(sb.toString());
-			return user.mention() + "Information has been PM'd to you.";
+			return user.mention() + " Information has been DM'd to you.";
 		}
 		return null;
 		
