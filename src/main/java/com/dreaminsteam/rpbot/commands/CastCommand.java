@@ -21,6 +21,10 @@ public class CastCommand implements CommandExecutor{
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
+		if(args.length < 1){
+			return "You forgot to say a spell!";	
+		}
+		
 		String spellStr = args[0];
 		if(spellStr == null || spellStr.isEmpty()){
 			return "You forgot to say a spell!";
