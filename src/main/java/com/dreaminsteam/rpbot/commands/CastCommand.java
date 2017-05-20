@@ -1,3 +1,4 @@
+
 package com.dreaminsteam.rpbot.commands;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
@@ -16,7 +17,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class CastCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, or in (C)ombat.", usage = "!cast [incantation] <A|B|C>, e.g. !cast lumos A", async = true)
+	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, or in (C)ombat.", usage = "!cast [incantation] <A|B|C|V|W>, e.g. !cast lumos A", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		

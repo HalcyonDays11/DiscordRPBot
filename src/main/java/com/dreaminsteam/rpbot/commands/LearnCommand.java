@@ -17,7 +17,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class LearnCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!learn"}, description="Attempt to practice a spell.", usage="!learn [spell] <A|B|C>, e.g. !learn lumos A")
+	@Command(aliases = {"!learn"}, description="Attempt to practice a spell.", usage="!learn [spell] <A|B|C|V|W>, e.g. !learn lumos A")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
@@ -47,11 +47,13 @@ public class LearnCommand implements CommandExecutor{
 		boolean advantage = spellModifiers.contains("a");
 		boolean combat = spellModifiers.contains("c");
 		boolean burden = spellModifiers.contains("b");
+		boolean nonverbal = spellModifiers.contains("v");
+		boolean wandless = spellModifiers.contains("w");
 		
 		int difficultyCheck = spell.getDC();
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat,);
+		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless);
 		result.setPersonalModifier(spellbook.getIndividualModifier(difficultyCheck));
 		
 		StringBuilder ret = new StringBuilder();
