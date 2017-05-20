@@ -26,7 +26,7 @@ public class DiceFormula {
 		int modifier = standardModifier;
 		
 		if(withAdvantage){
-			dieToRoll = Math.min(normalDie+1, DiceType.values().length - 1); //Defines the new die, which is the current die+1, no greater than the max dice option.
+			dieToRoll = Math.min(dieToRoll+1, DiceType.values().length - 1); //Defines the new die, which is the current die+1, no greater than the max dice option.
 		}
 		if(inCombat){
 			modifier = 0;
@@ -36,10 +36,10 @@ public class DiceFormula {
 			maxModifier = maxModifier - 1;
 		}
 		if(noWords){
-			dieToRoll = Math.max(normalDie-1, 0); //Defines the new die, which is the current die-1, no less than 0.
+			dieToRoll = Math.max(dieToRoll-1, 0); //Defines the new die, which is the current die-1, no less than 0.
 		}
 		if(noWand){
-			dieToRoll = Math.max(normalDie-2, 0); //Defines the new die, which is the current die-2, no less than 0.
+			dieToRoll = Math.max(dieToRoll-2, 0); //Defines the new die, which is the current die-2, no less than 0.
 		}
 		
 		DiceType die = DiceType.values()[dieToRoll];
