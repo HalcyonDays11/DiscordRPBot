@@ -59,9 +59,9 @@ public class Player {
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		
 		if(calendar.after(today)){
-			return true;
-		}else{
 			return false;
+		}else{
+			return true;
 		}
 	}
 	

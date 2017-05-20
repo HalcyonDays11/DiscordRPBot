@@ -13,6 +13,9 @@ public class DiceRoller {
 		
 		String numberOfDiceStr = split[0];
 		int numberOfDice = Integer.parseInt(numberOfDiceStr);
+		if(numberOfDice > 500){
+			return null;
+		}
 		String typeOfDiceStr = split[1];
 		int typeOfDice = Integer.parseInt(typeOfDiceStr);
 		
