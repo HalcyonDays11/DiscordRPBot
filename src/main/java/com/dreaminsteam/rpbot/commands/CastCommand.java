@@ -22,7 +22,7 @@ public class CastCommand implements CommandExecutor{
 		
 		String spellStr = args[0];
 		if(spellStr == null){
-			return null;
+			return "You forgot to say a spell!";
 		}
 		spellStr = spellStr.toLowerCase();
 		
@@ -42,9 +42,11 @@ public class CastCommand implements CommandExecutor{
 		boolean advantage = spellModifiers.contains("a");
 		boolean combat = spellModifiers.contains("c");
 		boolean burden = spellModifiers.contains("b");
+		boolean nonverbal = spellModifiers.contains("v");
+		boolean wandless = spellModifiers.contains("w");
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat);
+		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless);
 		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
 		
 		StringBuilder ret = new StringBuilder();

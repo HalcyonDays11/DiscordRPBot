@@ -17,7 +17,7 @@ public class DiceFormula {
 		return new RollResult(formula, rollThemBones, defaultModifier);
 	}
 	
-	public RollResult rollDiceWithModifiers(boolean withAdvantage, boolean withBurden, boolean inCombat){
+	public RollResult rollDiceWithModifiers(boolean withAdvantage, boolean withBurden, boolean inCombat, boolean noWords, boolean noWand){
 		int normalDie = die.ordinal(); //finds the number of the current die in the enumeration
 		int standardModifier = defaultModifier; //This is what you would normally get.
 		int maxModifier = defaultModifier; //This is what you could have, if not in combat.
@@ -34,6 +34,12 @@ public class DiceFormula {
 		if(withBurden){
 			modifier = modifier - 1;
 			maxModifier = maxModifier - 1;
+		}
+		if(noWords){
+			dieToRoll = Math.min(normalDie-1, DiceType.values().length - 1); //Defines the new die, which is the current die+1, no greater than the max dice option.
+		}
+		if(noWand){
+			dieToRoll = Math.min(normalDie-2, DiceType.values().length - 1); //Defines the new die, which is the current die+1, no greater than the max dice option.
 		}
 		
 		DiceType die = DiceType.values()[dieToRoll];

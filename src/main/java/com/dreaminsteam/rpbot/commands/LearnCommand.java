@@ -51,7 +51,7 @@ public class LearnCommand implements CommandExecutor{
 		int difficultyCheck = spell.getDC();
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat);
+		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat,);
 		result.setPersonalModifier(spellbook.getIndividualModifier(difficultyCheck));
 		
 		StringBuilder ret = new StringBuilder();
