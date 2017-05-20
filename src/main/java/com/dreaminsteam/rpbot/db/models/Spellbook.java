@@ -50,6 +50,10 @@ public class Spellbook {
 		currentIndividualModifierPoints = (modifier * POINTS_PER_BONUS);
 	}
 	
+	public Spell getSpell(){
+		return spell;
+	}
+	
 	public boolean hasPracticedToday(Date today){
 		if(lastCastAttempt == null){
 			return false;
@@ -59,10 +63,10 @@ public class Spellbook {
 		calendar.setTime(lastCastAttempt);
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		
-		if(calendar.after(today)){
-			return false;
-		}else{
+		if(calendar.getTime().after(today)){
 			return true;
+		}else{
+			return false;
 		}
 	}
 	

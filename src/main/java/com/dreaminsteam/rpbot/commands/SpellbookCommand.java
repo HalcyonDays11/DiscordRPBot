@@ -1,14 +1,18 @@
 package com.dreaminsteam.rpbot.commands;
 
+import java.util.List;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
 import com.dreaminsteam.rpbot.db.models.Spellbook;
+import com.j256.ormlite.dao.Dao;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IPrivateChannel;
 import sx.blah.discord.handle.obj.IUser;
 
 public class SpellbookCommand implements CommandExecutor{
@@ -18,7 +22,11 @@ public class SpellbookCommand implements CommandExecutor{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(args.length < 1){
-			return null;
+			Dao<Spellbook,Long> spellbookDao = DatabaseUtil.getSpellbookDao();
+			List<Spellbook> spellbooks = spellbookDao.queryForEq("player_id", player.getSnowflakeId());
+			IPrivateChannel pmChannel = user.getOrCreatePMChannel();
+			iterateThroughSpellbooks(spellbooks, pmChannel);
+			return user.mention() + " Information has been DM'd to you.";
 		}
 		
 		String spellStr = args[0];
@@ -46,7 +54,24 @@ public class SpellbookCommand implements CommandExecutor{
 			return user.mention() + " Information has been DM'd to you.";
 		}
 		return null;
-		
+	}
+	
+	private void iterateThroughSpellbooks(List<Spellbook> spellbooks, IPrivateChannel pmChannel){
+		if(spellbooks.isEmpty()){
+			pmChannel.sendMessage("You have not practiced any spells.");
+		}else{
+			StringBuilder sb = new StringBuilder("You have practiced the following spells: \n");
+			for(int i = 0; i < spellbooks.size(); i++){
+				Spellbook spellbook = spellbooks.get(i);
+				sb.append("**" + spellbook.getSpell().getPrettyIncantation() + "** ");
+				sb.append("- Personal modifier is **" + spellbook.getIndividualModifier() + "** with ");
+				sb.append(" **" + spellbook.getProgressTowardsNextBonus() + "/" + Spellbook.POINTS_PER_BONUS + "** towards next bonus.");
+				if(i < spellbooks.size() - 1){
+					sb.append("\n");
+				}
+			}
+			pmChannel.sendMessage(sb.toString());
+		}
 	}
 	
 }
