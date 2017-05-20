@@ -17,9 +17,9 @@ public enum Year {
 	GRAD_C(new DiceFormula(DiceType.D18, 9), "Graduate +3", "gradC"),
 	MASTERY(new DiceFormula(DiceType.D20, 10), "Mastery", "professor");
 	
-	private DiceFormula formula;
-	private String prettyName;
-	private String roleName;
+	private final DiceFormula formula;
+	private final String prettyName;
+	private final String roleName;
 	
 	private Year(DiceFormula formula, String prettyName, String roleName){
 		this.formula = formula;
@@ -37,6 +37,10 @@ public enum Year {
 	
 	public String getRoleName() {
 		return roleName;
+	}
+	
+	public int getDailyDestinyPoints() {
+		return (ordinal() + 1) * 2;
 	}
 	
 	public static Year getYearFromRoleList(List<String> roles){

@@ -1,6 +1,8 @@
 
 package com.dreaminsteam.rpbot.commands;
 
+import java.sql.SQLException;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
@@ -17,7 +19,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class CastCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, or in (C)ombat.", usage = "!cast [incantation] <A|B|C|V|W>, e.g. !cast lumos A", async = true)
+	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, or in (C)ombat.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. !cast lumos A 1", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
@@ -50,8 +52,35 @@ public class CastCommand implements CommandExecutor{
 		boolean nonverbal = spellModifiers.contains("v");
 		boolean wandless = spellModifiers.contains("w");
 		
+		boolean hasSituation = advantage || combat || burden || nonverbal || wandless;
+		
+		String destinyModifier = "";
+		if (hasSituation && args.length > 2){
+			destinyModifier = args[2];
+		} else if (!hasSituation && args.length > 1){
+			destinyModifier = args[1];
+		}
+		
+		int destinyPoints;
+		
+		if (destinyModifier == null || "".equals(destinyModifier)){
+			destinyPoints = 0;
+		} else {
+			try {
+				destinyPoints = Integer.parseInt(destinyModifier);
+			} catch (NumberFormatException e){
+				destinyPoints = 0;
+			}
+		}
+		
+		if (!player.canUseDestinyPoints(destinyPoints)){
+			return user.mention() + " You don't have enough destiny to cast this spell!"; 
+		}
+		
+		player.useDestinyPoints(destinyPoints);
+		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless);
+		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless, destinyPoints);
 		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
 		
 		StringBuilder ret = new StringBuilder();
@@ -67,8 +96,22 @@ public class CastCommand implements CommandExecutor{
 			}
 		}
 		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
-		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + (result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + " + " + result.getPersonalModifier() + "***");
+		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + 
+				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
+				" + " + result.getPersonalModifier() + 
+				(destinyPoints > 0 ? (" + "  + destinyPoints + " destiny") : "") +
+				"***");
 
+		if (destinyPoints > 0){
+			try {
+				DatabaseUtil.getPlayerDao().createOrUpdate(player);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				ret.append("\n **Error - destiny points may not be properly updated**");
+			}
+		}
+
+		
 		return ret.toString();
 	}
 

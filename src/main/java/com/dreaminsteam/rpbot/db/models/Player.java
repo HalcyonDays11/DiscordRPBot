@@ -14,6 +14,7 @@ public class Player {
 	@DatabaseField private String name;
 	@DatabaseField private Date lastPracticedDate;
 	@DatabaseField private Year currentYear;
+	@DatabaseField private int usedDestiny = 0;
 	
 	public Player() {
 		//ORMLite requires an empty constructor.
@@ -62,7 +63,27 @@ public class Player {
 		}else{
 			return false;
 		}
+	}
+	
+	public int getAvailableDestinyPoints(){
+		return currentYear.getDailyDestinyPoints() - usedDestiny;
+	}
+	
+	public int getUsedDestinyPoints(){
+		return usedDestiny;
+	}
+	
+	public boolean useDestinyPoints(int numPoints){
+		if (!canUseDestinyPoints(numPoints)){
+			return false;
+		}
 		
+		usedDestiny += numPoints;
+		return true;
+	}
+	
+	public boolean canUseDestinyPoints(int numPoints){
+		return numPoints >= 0 && numPoints <= getAvailableDestinyPoints();
 	}
 	
 	public void updateLastPracticeDate(Date today){

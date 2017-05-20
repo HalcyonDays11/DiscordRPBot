@@ -50,10 +50,37 @@ public class LearnCommand implements CommandExecutor{
 		boolean nonverbal = spellModifiers.contains("v");
 		boolean wandless = spellModifiers.contains("w");
 		
+		boolean hasSituation = advantage || combat || burden || nonverbal || wandless;
+		
+		String destinyModifier = "";
+		if (hasSituation && args.length > 2){
+			destinyModifier = args[2];
+		} else if (!hasSituation && args.length > 1){
+			destinyModifier = args[1];
+		}
+		
+		int destinyPoints;
+		
+		if (destinyModifier == null || "".equals(destinyModifier)){
+			destinyPoints = 0;
+		} else {
+			try {
+				destinyPoints = Integer.parseInt(destinyModifier);
+			} catch (NumberFormatException e){
+				destinyPoints = 0;
+			}
+		}
+		
+		if (!player.canUseDestinyPoints(destinyPoints)){
+			return user.mention() + " You don't have enough destiny to practice this spell!"; 
+		}
+		
+		player.useDestinyPoints(destinyPoints);
+		
 		int difficultyCheck = spell.getDC();
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless);
+		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless, destinyPoints);
 		result.setPersonalModifier(spellbook.getIndividualModifier(difficultyCheck));
 		
 		StringBuilder ret = new StringBuilder();
@@ -69,7 +96,11 @@ public class LearnCommand implements CommandExecutor{
 			}
 		}
 		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
-		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + (result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + " + " + result.getPersonalModifier() + "***");
+		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + 
+				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
+				" + " + result.getPersonalModifier() + 
+				(destinyPoints > 0 ? (" + "  + destinyPoints + " destiny") : "") +
+				"***");
 		
 		spellbook.practiceSpell(success, today);
 		if(success || spellbook.castAttemptsAtMax()){
