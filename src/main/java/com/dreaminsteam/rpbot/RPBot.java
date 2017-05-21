@@ -11,6 +11,7 @@ import org.reflections.Reflections;
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.SpellParser;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
+import com.dreaminsteam.rpbot.web.Webserver;
 
 import de.btobastian.sdcf4j.CommandExecutor;
 
@@ -21,9 +22,13 @@ public class RPBot {
 	private static RPBot instance;
 	
 	private DiscordBot bot;
+	private Webserver webserver;
 	private Properties secrets = null;
 	
 	public boolean setup() throws Exception{
+		webserver = new Webserver(4567);
+		webserver.initializeWebServer();
+		
 		setupSecrets();
 		if(secrets == null){
 			System.out.println("!!No secrets file exists!!");

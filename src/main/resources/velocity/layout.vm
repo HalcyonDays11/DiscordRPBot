@@ -1,0 +1,18 @@
+#* @implicitly included *#
+#* @vtlvariable name="WebPath" type="app.util.Path.Web" *#
+#* @vtlvariable name="currentUser" type="java.lang.String" *#
+#* @vtlvariable name="loginRedirect" type="java.lang.String" *#
+#macro(mainLayout)
+<html>
+<head>
+	<title>Test!</title>
+</head>
+<body>
+	<main>
+	    <div id="content">
+	        $bodyContent
+	    </div>
+	</main>
+</body>
+</html>
+#end

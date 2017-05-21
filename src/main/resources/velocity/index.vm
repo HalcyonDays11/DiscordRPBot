@@ -1,0 +1,4 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+	<h1>This should go in the body content spot!</h1>
+#end
