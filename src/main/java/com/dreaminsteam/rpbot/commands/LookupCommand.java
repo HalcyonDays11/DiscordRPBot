@@ -21,8 +21,9 @@ public class LookupCommand implements CommandExecutor{
 		
 		if (args.length == 0){
 			StringBuilder ret = new StringBuilder();
-			CloseableIterator<Spell> allSpells = DatabaseUtil.getSpellDao().closeableIterator();
+			CloseableIterator<Spell> allSpells = DatabaseUtil.getSpellDao().queryBuilder().orderBy("prettyIncantation", true).iterator();
 			
+			int count = 0;
 			while (allSpells.hasNext()){
 				Spell spell = allSpells.next();
 				ret.append(spell.getIncantation());
@@ -30,9 +31,17 @@ public class LookupCommand implements CommandExecutor{
 					ret.append("\t(DC " + spell.getDC() + ")");
 				}
 				ret.append("\n");
+				count++;
+				if (count >= 50){
+					apiClient.getOrCreatePMChannel(user).sendMessage(ret.toString());
+					count = 0;
+					ret = new StringBuilder();
+				}
 			}
 			allSpells.close();
-			apiClient.getOrCreatePMChannel(user).sendMessage(ret.toString());
+			if (count > 0){
+				apiClient.getOrCreatePMChannel(user).sendMessage(ret.toString());
+			}
 			return user.mention() + " Information has been DM'd to you.";
 		}  else {
 			String spellName = args[0];
