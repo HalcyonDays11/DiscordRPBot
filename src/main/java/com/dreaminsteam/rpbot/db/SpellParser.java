@@ -1,6 +1,10 @@
 package com.dreaminsteam.rpbot.db;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +16,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import com.dreaminsteam.rpbot.db.models.Spell;
+import com.dreaminsteam.rpbot.utilities.GoogleDriveIntegration;
 import com.j256.ormlite.table.TableUtils;
 
 public class SpellParser {
@@ -23,7 +28,9 @@ public class SpellParser {
 		
 		TableUtils.createTable(DatabaseUtil.getSpellDao());
 		
-		try (CSVParser parser = new CSVParser(new FileReader("./src/main/resources/Spell List.csv"), CSVFormat.EXCEL)){
+		ByteArrayOutputStream outputStream = GoogleDriveIntegration.getSpellListAsOutputStream();
+		
+		try (CSVParser parser = new CSVParser(new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()), "UTF-8"), CSVFormat.EXCEL)){
 			Iterator<CSVRecord> lineIterator = parser.iterator();
 			
 			CSVRecord firstLine = lineIterator.next();

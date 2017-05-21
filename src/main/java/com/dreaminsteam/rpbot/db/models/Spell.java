@@ -1,5 +1,6 @@
 package com.dreaminsteam.rpbot.db.models;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -9,7 +10,7 @@ public class Spell {
 	@DatabaseField(id = true) private String incantation = "";
 	@DatabaseField private String prettyIncantation;
 	@DatabaseField private String name = "";
-	@DatabaseField private String description = "";
+	@DatabaseField (dataType = DataType.LONG_STRING) private String description = "";
 	@DatabaseField private int dc = -1;
 	
 	public Spell(){
