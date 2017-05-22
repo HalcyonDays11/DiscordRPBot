@@ -30,7 +30,7 @@ public class SimpleRollCommand implements CommandExecutor{
 		AtomicInteger result = new AtomicInteger(0);
 		rollThemBones.stream().forEach(die -> result.addAndGet(die));
 		
-		return "***" + diceFormula + "*** → " + rollThemBones.toString() + " = " + result;
+		return "***" + diceFormula + "*** \u2192 " + rollThemBones.toString() + " = " + result;
 	}
 
 }
