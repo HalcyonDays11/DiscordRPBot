@@ -10,3 +10,4 @@ buildNumber.properties
 .mvn/timing.properties
 data/
 *.orig
+src/main/resources/client_secrets.json
