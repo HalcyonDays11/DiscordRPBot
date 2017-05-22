@@ -2,14 +2,14 @@ package com.dreaminsteam.rpbot.db;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -22,13 +22,28 @@ import com.j256.ormlite.table.TableUtils;
 public class SpellParser {
 
 	public static void parseSpells() throws Exception {
+		
+		ByteArrayOutputStream outputStream;
+		try {
+			outputStream = GoogleDriveIntegration.getSpellListAsOutputStream();
+			System.out.println("successfully connected to Google Drive for the spell list");
+		} catch (Exception e){
+			e.printStackTrace(System.err);
+			System.err.println("There was an error connecting with Google Drive.  The bot will start, using the most recent cached list of spells (which may be no spells)");
+			System.err.println("Check your internet connection, and make sure you have provided the client_secrets.json file.");
+			System.err.println("You may also try removing your cached credentials, which are stored in ~/.credentials/discord-rp-bot/StoredCredential on OSX/linux,"
+					+ "C:\\Users\\<username>.credentials\\discord-rp-bot\\StoredCredential on Windows.");
+			return;
+		}
+		
 		if (DatabaseUtil.getSpellDao().isTableExists()){
 			TableUtils.dropTable(DatabaseUtil.getSpellDao(), true);
 		} 
 		
 		TableUtils.createTable(DatabaseUtil.getSpellDao());
 		
-		ByteArrayOutputStream outputStream = GoogleDriveIntegration.getSpellListAsOutputStream();
+		
+		Set<String> incantations = new HashSet<>();
 		
 		try (CSVParser parser = new CSVParser(new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()), "UTF-8"), CSVFormat.EXCEL)){
 			Iterator<CSVRecord> lineIterator = parser.iterator();
@@ -69,6 +84,11 @@ public class SpellParser {
 					}
 				}
 				if ("".equals(spell.getIncantation()) || "unknown".equals(spell.getIncantation())){
+					continue;
+				}
+				boolean add = incantations.add(spell.getIncantation());
+				if (!add){
+					System.err.println("duplicate spell - " + spell.getIncantation());
 					continue;
 				}
 				DatabaseUtil.getSpellDao().create(spell);
