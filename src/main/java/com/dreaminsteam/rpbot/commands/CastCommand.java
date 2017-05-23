@@ -2,6 +2,8 @@
 package com.dreaminsteam.rpbot.commands;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
@@ -18,6 +20,28 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class CastCommand implements CommandExecutor{
 	
+	public static String[] normalizeArgs(String[] args){
+		List<String> ret = new ArrayList<>();
+		String spellStr = args[0];
+		if(spellStr.startsWith("\"")){
+			String spellPiece = "";
+			int i = 1;
+			while(!spellStr.endsWith("\"")){
+				spellPiece = args[i++];
+				spellStr += " " + spellPiece;
+			}
+			spellStr = spellStr.replace("\"", "");
+			spellStr = spellStr.replace(" ", "_");
+			ret.add(spellStr.toLowerCase());
+			while(i < args.length){
+				ret.add(args[i++]);
+			}
+			return ret.toArray(new String[ret.size()]);
+		}else{
+			return args;
+		}
+	}
+	
 	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, in (C)ombat, non-(V)erbal, or (W)andless.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. !cast lumos A 1", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
@@ -26,7 +50,10 @@ public class CastCommand implements CommandExecutor{
 			return user.mention() + "You forgot to say a spell!";	
 		}
 		
+		args = normalizeArgs(args);
+		
 		String spellStr = args[0];
+		
 		if(spellStr == null || spellStr.isEmpty()){
 			return user.mention() + "You forgot to say a spell!";
 		}

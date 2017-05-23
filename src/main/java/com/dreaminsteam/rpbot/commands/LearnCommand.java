@@ -21,6 +21,12 @@ public class LearnCommand implements CommandExecutor{
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
+		if(args.length < 1){
+			return user.mention() + " attempts to learn without specifying *what* to learn, and so ends up surfing the internet instead of studying.";
+		}
+		
+		args = CastCommand.normalizeArgs(args);
+		
 		String spellStr = args[0];
 		if(spellStr == null){
 			return null;
