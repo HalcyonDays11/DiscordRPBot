@@ -24,12 +24,12 @@ public class CastCommand implements CommandExecutor{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(args.length < 1){
-			return "You forgot to say a spell!";	
+			return user.mention() + " attempts to cast all spells and no spells simultaneously, ends up destroying the castle...";	
 		}
 		
 		String spellStr = args[0];
 		if(spellStr == null || spellStr.isEmpty()){
-			return "You forgot to say a spell!";
+			return user.mention() + " attempts to cast all spells and no spells simultaneously, ends up destroying the castle...";
 		}
 		spellStr = spellStr.toLowerCase();
 		
