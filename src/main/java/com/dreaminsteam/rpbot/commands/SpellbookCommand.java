@@ -29,6 +29,8 @@ public class SpellbookCommand implements CommandExecutor{
 			return user.mention() + " Information has been DM'd to you.";
 		}
 		
+		args = CastCommand.normalizeArgs(args);
+		
 		String spellStr = args[0];
 		if(spellStr == null){
 			return null;

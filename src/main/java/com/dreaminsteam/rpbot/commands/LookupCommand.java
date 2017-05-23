@@ -43,7 +43,9 @@ public class LookupCommand implements CommandExecutor{
 				apiClient.getOrCreatePMChannel(user).sendMessage(ret.toString());
 			}
 			return user.mention() + " Information has been DM'd to you.";
-		}  else {
+		}  else {	
+			args = CastCommand.normalizeArgs(args);
+			
 			String spellName = args[0];
 			List<Spell> queryForEq = DatabaseUtil.getSpellDao().queryForEq("incantation", spellName.trim().toLowerCase().replace(" ", "_"));
 			
