@@ -42,14 +42,8 @@ public class SpellbookCommand implements CommandExecutor{
 		
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
 		if(spellbook != null){
-			int individualModifier = spellbook.getIndividualModifier(spell.getDC() - 1);
-			int progressTowardsNextBonus = spellbook.getProgressTowardsNextBonus();
-			
 			StringBuilder sb = new StringBuilder();
-			sb.append("**" + spell.getPrettyIncantation() + "**  ");
-			sb.append("(DC" + spell.getDC() + ")  ");
-			sb.append("Personal modifier is **+" + individualModifier + "** with ");
-			sb.append(" **" + progressTowardsNextBonus + "/" + Spellbook.POINTS_PER_BONUS + "** towards next bonus.");
+			listIndividualSpellbook(spellbook, sb);
 			user.getOrCreatePMChannel().sendMessage(sb.toString());
 			return user.mention() + " Information has been DM'd to you.";
 		}
@@ -63,15 +57,24 @@ public class SpellbookCommand implements CommandExecutor{
 			StringBuilder sb = new StringBuilder("You have practiced the following spells: \n");
 			for(int i = 0; i < spellbooks.size(); i++){
 				Spellbook spellbook = spellbooks.get(i);
-				sb.append("**" + spellbook.getSpell().getPrettyIncantation() + "** ");
-				sb.append("- Personal modifier is **" + spellbook.getIndividualModifier() + "** with ");
-				sb.append(" **" + spellbook.getProgressTowardsNextBonus() + "/" + Spellbook.POINTS_PER_BONUS + "** towards next bonus.");
+				listIndividualSpellbook(spellbook, sb);
 				if(i < spellbooks.size() - 1){
 					sb.append("\n");
 				}
 			}
 			pmChannel.sendMessage(sb.toString());
 		}
+	}
+	
+	private void listIndividualSpellbook(Spellbook spellbook, StringBuilder sb){
+		Spell spell = spellbook.getSpell();
+		int individualModifier = spellbook.getIndividualModifier(spell.getDC() - 1);
+		int progressTowardsNextBonus = spellbook.getProgressTowardsNextBonus();
+		
+		sb.append("**" + spell.getPrettyIncantation() + "**  ");
+		sb.append("(DC" + spell.getDC() + ")  ");
+		sb.append("Personal modifier is **+" + individualModifier + "** with ");
+		sb.append(" **" + progressTowardsNextBonus + "/" + Spellbook.POINTS_PER_BONUS + "** towards next bonus.");
 	}
 	
 }
