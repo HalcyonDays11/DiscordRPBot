@@ -14,7 +14,6 @@ import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 
 public class CastCommand implements CommandExecutor{
@@ -24,18 +23,22 @@ public class CastCommand implements CommandExecutor{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(args.length < 1){
-			return user.mention() + " attempts to cast all spells and no spells simultaneously, ends up destroying the castle...";	
+			return user.mention() + "You forgot to say a spell!";	
 		}
 		
 		String spellStr = args[0];
 		if(spellStr == null || spellStr.isEmpty()){
-			return user.mention() + " attempts to cast all spells and no spells simultaneously, ends up destroying the castle...";
+			return user.mention() + "You forgot to say a spell!";
 		}
 		spellStr = spellStr.toLowerCase();
 		
 		Spell spell = DatabaseUtil.findSpell(spellStr);
 		if(spell == null){
-			return "**Spell Not Found!** \"" + spellStr + "\" doesn't appear in the spell list.";
+			return user.mention() + "**Spell Not Found!** \"" + spellStr + "\" doesn't appear in the spell list.";
+		}
+		
+		if (spell.getDC() <= 0){
+			return user.mention() + "The spell \"" + spellStr + "\" appears in the spell list, but has not been assigned a difficulty value.  Ask your professor to update the spreadsheet.";
 		}
 		
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
@@ -96,7 +99,7 @@ public class CastCommand implements CommandExecutor{
 			}
 		}
 		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
-		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + 
+		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 
 				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
 				" + " + result.getPersonalModifier() + 
 				(destinyPoints > 0 ? (" + "  + destinyPoints + " destiny") : "") +
