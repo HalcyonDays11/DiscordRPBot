@@ -99,7 +99,7 @@ public class CastCommand implements CommandExecutor{
 			}
 		}
 		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
-		ret.append("\n*" + result.getRollFormula() + " =>* ***" + result.getDiceRolls().toString() + 
+		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 
 				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
 				" + " + result.getPersonalModifier() + 
 				(destinyPoints > 0 ? (" + "  + destinyPoints + " destiny") : "") +
