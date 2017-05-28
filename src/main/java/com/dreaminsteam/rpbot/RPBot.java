@@ -11,6 +11,7 @@ import org.reflections.Reflections;
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.SpellParser;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
+import com.dreaminsteam.rpbot.util.DestinyPointResetHandler;
 import com.dreaminsteam.rpbot.web.Webserver;
 
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -26,6 +27,8 @@ public class RPBot {
 	private Properties secrets = null;
 	
 	public boolean setup() throws Exception{
+		DestinyPointResetHandler.setupResetHandler();
+		
 		webserver = new Webserver(4567);
 		webserver.initializeWebServer();
 		
