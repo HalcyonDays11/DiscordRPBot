@@ -73,6 +73,18 @@ public class Player {
 		return usedDestiny;
 	}
 	
+	public void restoreDestinyPoints(int pointsToRestore){
+		if (pointsToRestore < usedDestiny){
+			usedDestiny -= pointsToRestore;
+		} else {
+			usedDestiny = 0;
+		}
+	}
+	
+	public void restoreAllDestinyPoints(){
+		usedDestiny = 0;
+	}
+	
 	public boolean useDestinyPoints(int numPoints){
 		if (!canUseDestinyPoints(numPoints)){
 			return false;
