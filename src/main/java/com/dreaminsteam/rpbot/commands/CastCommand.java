@@ -42,7 +42,7 @@ public class CastCommand implements CommandExecutor{
 		}
 	}
 	
-	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, in (C)ombat, non-(V)erbal, or (W)andless.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. !cast lumos A 1", async = true)
+	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)dvantage, (B)urden, in (C)ombat, non-(V)erbal, or (W)andless.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. **!cast lumos A 1**", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
@@ -61,11 +61,11 @@ public class CastCommand implements CommandExecutor{
 		
 		Spell spell = DatabaseUtil.findSpell(spellStr);
 		if(spell == null){
-			return user.mention() + "**Spell Not Found!** \"" + spellStr + "\" doesn't appear in the spell list.";
+			return user.mention() + "  **Spell Not Found!**  \"" + spellStr + "\" doesn't appear in the spell list.";
 		}
 		
 		if (spell.getDC() <= 0){
-			return user.mention() + "The spell \"" + spellStr + "\" appears in the spell list, but has not been assigned a difficulty value.  Ask your professor to update the spreadsheet.";
+			return user.mention() + "  The spell \"" + spellStr + "\" appears in the spell list, but has not been assigned a difficulty value.  Ask your professor to update the spreadsheet.";
 		}
 		
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
