@@ -2,6 +2,7 @@ package com.dreaminsteam.rpbot;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
 
@@ -56,7 +57,8 @@ public class RPBot {
 	}
 	
 	private void setupSecrets(){
-		try(InputStream fis = getClass().getClassLoader().getResourceAsStream("Secrets.properties");){
+		URL resource = getClass().getClassLoader().getResource("Secrets.properties");
+		try(InputStream fis = resource.openStream()){
 			secrets = new Properties();
 			secrets.load(fis);
 		} catch (Throwable t) {
