@@ -8,6 +8,10 @@ public class DiceRoller {
 
 	public static Random rando = new Random();
 	
+	public static boolean isDiceFormula(String formula){
+		return formula.matches("^[0-9]+[dD][0-9]+$");
+	}
+	
 	public static List<Integer> rollThemBones(String formula){
 		String[] split = formula.split("d");
 		

@@ -167,16 +167,17 @@
   </dependencyManagement>
   
   <build>
-  	<resources>
-  		<resource>
-	  		<directory>src/resources</directory>
-	  		<excludes>
-	  			<exclude>Secrets.properties</exclude>
-	  		</excludes>
-	  	</resource>
-  	</resources>
-  	
     <plugins>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-jar-plugin</artifactId>
+      	<version>3.0.2</version>
+      	<configuration>
+      		<excludes>
+      			<exclude>**/Secrets.properties</exclude>
+      		</excludes>
+      	</configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>

@@ -35,12 +35,12 @@ public class DestinyPointResetHandler {
 	
 	
 	
-	private static final String path =  "DiscordRPBot/DestinyPointReset.properties";
+	private static final String path =  "DestinyPointReset.properties";
 
 	public static void setupResetHandler(){
 		Properties properties = new Properties();
 		
-		try (FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.home"), path))){
+		try (FileInputStream inputStream = new FileInputStream(PathUtil.getConfigFile(path))){
 			properties.load(inputStream);
 		} catch (IOException e) {}
 		

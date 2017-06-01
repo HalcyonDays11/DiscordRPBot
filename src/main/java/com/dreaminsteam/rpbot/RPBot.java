@@ -1,7 +1,9 @@
 package com.dreaminsteam.rpbot;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
@@ -13,6 +15,7 @@ import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.SpellParser;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
 import com.dreaminsteam.rpbot.util.DestinyPointResetHandler;
+import com.dreaminsteam.rpbot.util.PathUtil;
 import com.dreaminsteam.rpbot.web.Webserver;
 
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -36,7 +39,7 @@ public class RPBot {
 		setupSecrets();
 		if(secrets == null){
 			System.out.println("!!No secrets file exists!!");
-			System.out.println("Create a file called \"Secrets.properties\" in the resources folder.");
+			System.out.println("Create a file called \"Secrets.properties\" in the main config folder.");
 			System.out.println("It should contain your Discord bot token in the form:");
 			System.out.println("DISCORD_BOT_TOKEN = yourtokenhere");
 			return false;
@@ -61,6 +64,16 @@ public class RPBot {
 	
 	private void setupSecrets(){
 		URL resource = getClass().getClassLoader().getResource("Secrets.properties");
+		if(resource == null){
+			File configFile = PathUtil.getConfigFile("Secrets.properties");
+			try {
+				resource = configFile.toURI().toURL();
+			} catch (Throwable t) {
+				t.printStackTrace();
+				return;
+			}
+		}
+		
 		try(InputStream fis = resource.openStream()){
 			secrets = new Properties();
 			secrets.load(fis);
