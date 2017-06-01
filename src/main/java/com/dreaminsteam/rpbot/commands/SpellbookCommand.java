@@ -63,8 +63,14 @@ public class SpellbookCommand implements CommandExecutor{
 				if(i < spellbooks.size() - 1){
 					sb.append("\n");
 				}
+				if(i > 0 && i % 25 == 0){
+					pmChannel.sendMessage(sb.toString());
+					sb = new StringBuilder();
+				}
 			}
-			pmChannel.sendMessage(sb.toString());
+			if(!sb.toString().isEmpty()){				
+				pmChannel.sendMessage(sb.toString());
+			}
 		}
 	}
 	

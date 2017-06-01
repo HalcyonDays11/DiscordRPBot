@@ -18,13 +18,22 @@ public class ListPlayersCommand implements CommandExecutor{
 		if(!hasAdminRole){
 			return;
 		}
+		IPrivateChannel pmChannel = user.getOrCreatePMChannel();
+
 		StringBuilder sb = new StringBuilder();
-		sb.append("current players: \n");
+		sb.append("Current players: \n");
+		int count = 0;
 		for (Player player : DatabaseUtil.getPlayerDao().queryForAll()) {
 			sb.append("**" + player.getSnowflakeId() + "**: " + player.getName() + ", " + player.getCurrentYear().getPrettyName() + "\n");
+			count++;
+			if(count == 50){
+				count = 0;
+				pmChannel.sendMessage(sb.toString());
+				sb = new StringBuilder();
+			}
 		}
-		
-		IPrivateChannel pmChannel = user.getOrCreatePMChannel();
-		pmChannel.sendMessage(sb.toString());
+		if(count > 0){
+			pmChannel.sendMessage(sb.toString());
+		}
 	}
 }
