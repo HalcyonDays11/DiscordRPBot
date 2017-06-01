@@ -81,6 +81,10 @@
     	<groupId>com.google.api-client</groupId>
     	<artifactId>google-api-client</artifactId>
     </dependency>
+    <dependency>
+    	<groupId>it.sauronsoftware.cron4j</groupId>
+    	<artifactId>cron4j</artifactId>
+    </dependency>
   </dependencies>
   <dependencyManagement>
   	<dependencies>
@@ -153,6 +157,11 @@
   			<groupId>com.google.api-client</groupId>
   			<artifactId>google-api-client</artifactId>
   			<version>1.22.0</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>it.sauronsoftware.cron4j</groupId>
+  			<artifactId>cron4j</artifactId>
+  			<version>2.2.5</version>
   		</dependency>
   	</dependencies>
   </dependencyManagement>

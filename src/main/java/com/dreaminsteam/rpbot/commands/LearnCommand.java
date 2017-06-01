@@ -39,7 +39,7 @@ public class LearnCommand implements CommandExecutor{
 		
 		Spell spell = DatabaseUtil.findSpell(spellStr);
 		if(spell == null){
-			return "**Spell Not Found!** \"" + spellStr + "\" doesn't appear in the spell list.";
+			return "  **Spell Not Found!**  \"" + spellStr + "\" doesn't appear in the spell list.";
 		}
 		
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
