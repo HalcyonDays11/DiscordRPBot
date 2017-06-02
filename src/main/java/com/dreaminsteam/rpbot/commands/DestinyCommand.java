@@ -12,7 +12,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class DestinyCommand implements CommandExecutor {
 
-	@Command(aliases = {"!destiny"}, description="Find out how many Destiny Points you have remaining today.", usage="!destiny [total]")
+	@Command(aliases = {"!destiny"}, description="Find out how many Destiny Points you have remaining today.", usage="!destiny")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		

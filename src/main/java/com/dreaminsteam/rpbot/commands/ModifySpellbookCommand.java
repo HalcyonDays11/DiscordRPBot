@@ -16,7 +16,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class ModifySpellbookCommand implements CommandExecutor{
 	
-	@Command(aliases = "!modifySpellbook", description="Admin only!  Modify a player's spellbook.", usage="!modifySpellbook [playerId] [incantation] [newModifier], e.g. !modifySpellbook 123456 lumos 2", async=true)
+	@Command(aliases = "!modifySpellbook", description="Admin Only!  Modify a player's spellbook.", usage="!modifySpellbook [playerId] [incantation] [newModifier], e.g. !modifySpellbook 123456 lumos 2", async=true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		boolean hasAdminRole = CommandUtils.hasAdminRole(user, channel);
 		if(!hasAdminRole){
