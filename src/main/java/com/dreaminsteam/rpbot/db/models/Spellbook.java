@@ -10,7 +10,6 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Spellbook {
 	
 	public static final int POINTS_PER_BONUS = 3;
-	public static final int DEFAULT_MAX_BONUS = 3;
 	public static final int MAX_ATTEMPTS_PER_DAY = 3;
 	
 	@DatabaseField(foreign=true, columnName="player_id", foreignAutoRefresh=true)
@@ -35,7 +34,11 @@ public class Spellbook {
 	}
 	
 	public int getIndividualModifier(){
-		return getIndividualModifier(DEFAULT_MAX_BONUS);
+		return getIndividualModifier(spell.getDC());
+	}
+	
+	public boolean hasMastered(){
+		return currentIndividualModifierPoints/POINTS_PER_BONUS >= spell.getDC();
 	}
 	
 	public int getIndividualModifier(int maxModifier){

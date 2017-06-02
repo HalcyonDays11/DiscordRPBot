@@ -44,6 +44,10 @@ public class LearnCommand implements CommandExecutor{
 		
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
 		
+		if(spellbook.hasMastered()){
+			return user.mention() + " You've already mastered this spell!";
+		}
+		
 		String spellModifiers = "";
 		if(args.length > 1){
 			spellModifiers = args[1];
