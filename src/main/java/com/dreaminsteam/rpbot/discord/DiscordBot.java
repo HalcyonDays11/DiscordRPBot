@@ -27,6 +27,12 @@ public class DiscordBot{
 		cmdHandler = new Discord4JHandler(discordClient);
 	}
 	
+	public void setStatus(String status){
+		if(discordClient.isLoggedIn()){
+			discordClient.changePlayingText(status);
+		}
+	}
+	
 	public void disconnect() {
 		if(discordClient.isLoggedIn()){			
 			discordClient.logout();

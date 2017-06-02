@@ -14,6 +14,7 @@ import org.reflections.Reflections;
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.SpellParser;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
+import com.dreaminsteam.rpbot.discord.WittyStatuser;
 import com.dreaminsteam.rpbot.util.DestinyPointResetHandler;
 import com.dreaminsteam.rpbot.util.PathUtil;
 import com.dreaminsteam.rpbot.web.Webserver;
@@ -56,6 +57,7 @@ public class RPBot {
 			bot.registerCommand(klass.getConstructor().newInstance());
 		}
 		
+		WittyStatuser.scheduleWittyStatusChanges(bot);
 		DatabaseUtil.setupConnection();
 		DatabaseUtil.setupDbIfNecessary(false);
 		SpellParser.parseSpells();

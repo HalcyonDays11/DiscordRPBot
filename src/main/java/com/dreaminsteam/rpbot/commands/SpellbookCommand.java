@@ -1,5 +1,6 @@
 package com.dreaminsteam.rpbot.commands;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
@@ -22,10 +23,7 @@ public class SpellbookCommand implements CommandExecutor{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(args.length < 1){
-			Dao<Spellbook,Long> spellbookDao = DatabaseUtil.getSpellbookDao();
-			List<Spellbook> spellbooks = spellbookDao.queryForEq("player_id", player.getSnowflakeId());
-			IPrivateChannel pmChannel = user.getOrCreatePMChannel();
-			iterateThroughSpellbooks(spellbooks, pmChannel);
+			listAllSpells(user, player.getSnowflakeId(), false);
 			return user.mention() + " Information has been DM'd to you.";
 		}
 		
@@ -35,6 +33,16 @@ public class SpellbookCommand implements CommandExecutor{
 		if(spellStr == null){
 			return null;
 		}
+		
+		if(spellStr.matches("^[0-9]+$")){
+			boolean hasAdminRole = CommandUtils.hasAdminRole(user, channel);
+			if(!hasAdminRole){
+				return user.mention() + " Woah, now... you can't just go looking at other people's spellbooks.";
+			}
+			listAllSpells(user, spellStr, true);
+			return user.mention() + " Information has been DM'd to you.";
+		}
+		
 		spellStr = spellStr.toLowerCase();
 		
 		Spell spell = DatabaseUtil.findSpell(spellStr);
@@ -52,11 +60,22 @@ public class SpellbookCommand implements CommandExecutor{
 		return null;
 	}
 	
-	private void iterateThroughSpellbooks(List<Spellbook> spellbooks, IPrivateChannel pmChannel){
+	private String listAllSpells(IUser user, String playerSnowflakeId, boolean other) throws SQLException{
+		Dao<Spellbook,Long> spellbookDao = DatabaseUtil.getSpellbookDao();
+		List<Spellbook> spellbooks = spellbookDao.queryForEq("player_id", playerSnowflakeId);
+		IPrivateChannel pmChannel = user.getOrCreatePMChannel();
+		if(other){
+			pmChannel.sendMessage("Spellbooks for player id: " + playerSnowflakeId);
+		}
+		iterateThroughSpellbooks(spellbooks, pmChannel, other);
+		return user.mention() + " Information has been DM'd to you.";
+	}
+	
+	private void iterateThroughSpellbooks(List<Spellbook> spellbooks, IPrivateChannel pmChannel, boolean other){
 		if(spellbooks.isEmpty()){
-			pmChannel.sendMessage("You have not practiced any spells.");
+			pmChannel.sendMessage(other ? "They" : "You" + " have not practiced any spells.");
 		}else{
-			StringBuilder sb = new StringBuilder("You have practiced the following spells: \n");
+			StringBuilder sb = new StringBuilder(other ? "They" : "You" + " have practiced the following spells: \n");
 			for(int i = 0; i < spellbooks.size(); i++){
 				Spellbook spellbook = spellbooks.get(i);
 				listIndividualSpellbook(spellbook, sb);
