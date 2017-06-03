@@ -13,10 +13,10 @@ import sx.blah.discord.handle.obj.IUser;
 public class ListPlayersCommand implements CommandExecutor{
 
 	@Command(aliases = {"!playerInfo"}, description = "Admin only! List current player information", usage="!playerInfo", async=true)
-	public void getPlayerInfo(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
+	public String getPlayerInfo(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		boolean hasAdminRole = CommandUtils.hasAdminRole(user, channel);
 		if(!hasAdminRole){
-			return;
+			return user.mention() + " You are likely to be eaten by a grue.  If this predicament seems particularly cruel, consider whose fault it might be: not a torch nor a match in your inventory.";
 		}
 		IPrivateChannel pmChannel = user.getOrCreatePMChannel();
 
@@ -35,5 +35,6 @@ public class ListPlayersCommand implements CommandExecutor{
 		if(count > 0){
 			pmChannel.sendMessage(sb.toString());
 		}
+		return user.mention() + " Information DM'd to you.";
 	}
 }

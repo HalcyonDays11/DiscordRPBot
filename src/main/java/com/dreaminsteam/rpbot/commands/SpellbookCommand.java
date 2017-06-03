@@ -82,7 +82,7 @@ public class SpellbookCommand implements CommandExecutor{
 				if(i < spellbooks.size() - 1){
 					sb.append("\n");
 				}
-				if(i > 0 && i % 25 == 0){
+				if(i > 0 && i % 15 == 0){
 					pmChannel.sendMessage(sb.toString());
 					sb = new StringBuilder();
 				}
