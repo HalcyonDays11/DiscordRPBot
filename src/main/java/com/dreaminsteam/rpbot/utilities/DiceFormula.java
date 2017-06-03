@@ -48,6 +48,29 @@ public class DiceFormula {
 		return new RollResult(formula, dieRoll, modifier, maxModifier, destiny);
 	}
 	
+	public RollResult rollDodgeDiceWithModifiers(boolean withAdvantage, boolean withBurden, int destiny){
+		int normalDie = die.ordinal(); //finds the number of the current die in the enumeration
+		int standardModifier = defaultModifier; //This is what you would normally get.
+		int maxModifier = defaultModifier; //This is what you could have, if not in combat.
+		
+		int dieToRoll = normalDie;
+		int modifier = standardModifier;
+		
+		if(withAdvantage){
+			modifier = modifier + 1;
+			maxModifier = maxModifier + 1;
+		}
+		if(withBurden){
+			modifier = modifier - 1;
+			maxModifier = maxModifier - 1;
+		}
+		
+		DiceType die = DiceType.values()[dieToRoll];
+		String formula = "1d" + die.getDieValue();
+		List<Integer> dieRoll = DiceRoller.rollThemBones(formula);
+		return new RollResult(formula, dieRoll, modifier, maxModifier, destiny);
+	}
+	
 	public static enum DiceType{ //list of DiceType. defined as name (D4) value (4) and placement in the list (0)
 		D4(4), //This is 0
 		D6(6), //This is 1

@@ -45,31 +45,7 @@ public class DodgeCommand implements CommandExecutor{
 	@Command(aliases = {"!dodge"}, description="Dodge a spell in combat with (A)dvantage or (B)urden.", usage = "!dodge <A|B> <number of destiny points>, e.g. **!dodge B 1**", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
-		
-		if(args.length < 1){
-			return user.mention() + " attempts to cast all spells and no spells the same time. Almost destroys the castle. Great job!";	
-		}
-		
-		args = normalizeArgs(args);
-		
-		String spellStr = args[0];
-		
-		if(spellStr == null || spellStr.isEmpty()){
-			return user.mention() + " attempts to cast all spells and no spells the same time. Almost destroys the castle. Great job!";
-		}
-		spellStr = spellStr.toLowerCase();
-		
-		Spell spell = DatabaseUtil.findSpell(spellStr);
-		if(spell == null){
-			return user.mention() + "  **Spell Not Found!**  \"" + spellStr + "\" doesn't appear in the spell list.";
-		}
-		
-		if (spell.getDC() <= 0){
-			return user.mention() + "  The spell \"" + spellStr + "\" appears in the spell list, but has not been assigned a difficulty value.  Ask your professor to update the spreadsheet.";
-		}
-		
-		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
-		
+			
 		String spellModifiers = "";
 		if(args.length > 1){
 			spellModifiers = args[1];
@@ -107,7 +83,7 @@ public class DodgeCommand implements CommandExecutor{
 		player.useDestinyPoints(destinyPoints);
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, destinyPoints);
+		RollResult result = formula.rollDodgeDiceWithModifiers(advantage, burden, destinyPoints);
 		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
 		
 		StringBuilder ret = new StringBuilder();

@@ -18,7 +18,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class SpellbookCommand implements CommandExecutor{
 
-	@Command(aliases = {"!spellbook"}, description="See your own stats with a specific spell.", usage="!spellbook [incantation]")
+	@Command(aliases = {"!spellbook"}, description="See your own stats with a specific spell.", usage="!spellbook <incantation>")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
