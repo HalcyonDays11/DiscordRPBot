@@ -13,7 +13,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class DestinyRestoreCommand implements CommandExecutor{
 		
-		@Command(aliases = {"!restoreDestiny"}, description="restore Destiny Points.  Usable only by admins", usage = "!resetDestiny [playerId] [number of points to restore]", async = true)
+		@Command(aliases = {"!restoreDestiny"}, description="Admin Only! Restore Destiny Points.", usage = "!resetDestiny [playerId] [number of points to restore]", async = true)
 		public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception {
 			
 			if(!CommandUtils.hasAdminRole(user, channel)){
@@ -30,7 +30,7 @@ public class DestinyRestoreCommand implements CommandExecutor{
 			Player player = DatabaseUtil.getPlayerDao().queryForId(playerId);
 			
 			if(player == null){
-				return " I can't find a player with that ID... try using !playerInfo to get the list of players.";
+				return " I can't find a player with that ID... try using **!playerInfo** to get the list of players.";
 			}
 			
 			if (args.length > 1){

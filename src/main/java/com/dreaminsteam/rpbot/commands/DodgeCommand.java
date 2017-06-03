@@ -18,7 +18,7 @@ import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IUser;
 
-public class CastCommand implements CommandExecutor{
+public class DodgeCommand implements CommandExecutor{
 	
 	public static String[] normalizeArgs(String[] args){
 		List<String> ret = new ArrayList<>();
@@ -42,7 +42,7 @@ public class CastCommand implements CommandExecutor{
 		}
 	}
 	
-	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)ssistance, (B)urden, in (C)ombat, non-(V)erbal, or (W)andless.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. **!cast lumos A 1**", async = true)
+	@Command(aliases = {"!dodge"}, description="Dodge a spell in combat with (A)dvantage or (B)urden.", usage = "!dodge <A|B> <number of destiny points>, e.g. **!dodge B 1**", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
@@ -77,12 +77,9 @@ public class CastCommand implements CommandExecutor{
 		spellModifiers = spellModifiers.toLowerCase();
 		
 		boolean advantage = spellModifiers.contains("a");
-		boolean combat = spellModifiers.contains("c");
 		boolean burden = spellModifiers.contains("b");
-		boolean nonverbal = spellModifiers.contains("v");
-		boolean wandless = spellModifiers.contains("w");
 		
-		boolean hasSituation = advantage || combat || burden || nonverbal || wandless;
+		boolean hasSituation = advantage || burden;
 		
 		String destinyModifier = "";
 		if (hasSituation && args.length > 2){
@@ -110,22 +107,12 @@ public class CastCommand implements CommandExecutor{
 		player.useDestinyPoints(destinyPoints);
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless, destinyPoints);
+		RollResult result = formula.rollDiceWithModifiers(advantage, burden, destinyPoints);
 		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
 		
 		StringBuilder ret = new StringBuilder();
 		
-		int difficultyCheck = spell.getDC();
-		if(result.getTotal() >= difficultyCheck){
-			ret.append(user.mention() + " ** Spell Succeeds! **");
-		}else{
-			if(result.getTheoreticalTotal() >= difficultyCheck){
-				ret.append(user.mention() + " ** Spell Missed! **");
-			}else{
-				ret.append(user.mention() + " ** Spell Failed! **");
-			}
-		}
-		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
+		ret.append(user.mention() + " You rolled **" + result.getTotal() + "**");
 		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 
 				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
 				" + " + result.getPersonalModifier() + 
