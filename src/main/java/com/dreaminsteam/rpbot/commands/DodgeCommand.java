@@ -7,8 +7,6 @@ import java.util.List;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
-import com.dreaminsteam.rpbot.db.models.Spell;
-import com.dreaminsteam.rpbot.db.models.Spellbook;
 import com.dreaminsteam.rpbot.utilities.DiceFormula;
 import com.dreaminsteam.rpbot.utilities.RollResult;
 
@@ -45,23 +43,23 @@ public class DodgeCommand implements CommandExecutor{
 	@Command(aliases = {"!dodge"}, description="Dodge a spell in combat with (A)dvantage or (B)urden.", usage = "!dodge <A|B> <number of destiny points>, e.g. **!dodge B 1**", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
-			
-		String spellModifiers = "";
-		if(args.length > 1){
-			spellModifiers = args[1];
-		}
-		spellModifiers = spellModifiers.toLowerCase();
 		
-		boolean advantage = spellModifiers.contains("a");
-		boolean burden = spellModifiers.contains("b");
+		String dodgeModifier = "";
+		if(args.length > 0){
+			dodgeModifier = args[0];
+		}
+		dodgeModifier = dodgeModifier.toLowerCase();
+		
+		boolean advantage = dodgeModifier.contains("a");
+		boolean burden = dodgeModifier.contains("b");
 		
 		boolean hasSituation = advantage || burden;
 		
 		String destinyModifier = "";
-		if (hasSituation && args.length > 2){
+		if (hasSituation && args.length > 1){
 			destinyModifier = args[2];
-		} else if (!hasSituation && args.length > 1){
-			destinyModifier = args[1];
+		} else if (!hasSituation && args.length > 0){
+			destinyModifier = args[0];
 		}
 		
 		int destinyPoints;
@@ -77,14 +75,13 @@ public class DodgeCommand implements CommandExecutor{
 		}
 		
 		if (!player.canUseDestinyPoints(destinyPoints)){
-			return user.mention() + " You don't have enough destiny to cast this spell!"; 
+			return user.mention() + " You don't have enough destiny to do that!"; 
 		}
 		
 		player.useDestinyPoints(destinyPoints);
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
 		RollResult result = formula.rollDodgeDiceWithModifiers(advantage, burden, destinyPoints);
-		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
 		
 		StringBuilder ret = new StringBuilder();
 		

@@ -11,10 +11,10 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Player {
 
 	@DatabaseField(id = true) private String snowflakeId; // This is a Discord thing.  It's the global, unique identifier for the user.
-	@DatabaseField private String name;
+	@DatabaseField private String name; //Out of curiosity, will the database freak out if a player changes their name? I would assume note, but I'm not sure how/where it fixes a name change?
 	@DatabaseField private Date lastPracticedDate;
 	@DatabaseField private Year currentYear;
-	@DatabaseField private int usedDestiny = 0;
+	@DatabaseField private int usedDestiny = 0; 
 	
 	public Player() {
 		//ORMLite requires an empty constructor.
