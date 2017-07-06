@@ -20,48 +20,27 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class DodgeCommand implements CommandExecutor{
 	
-	public static String[] normalizeArgs(String[] args){
-		List<String> ret = new ArrayList<>();
-		String spellStr = args[0];
-		if(spellStr.startsWith("\"")){
-			String spellPiece = "";
-			int i = 1;
-			while(!spellStr.endsWith("\"")){
-				spellPiece = args[i++];
-				spellStr += " " + spellPiece;
-			}
-			spellStr = spellStr.replace("\"", "");
-			spellStr = spellStr.replace(" ", "_");
-			ret.add(spellStr.toLowerCase());
-			while(i < args.length){
-				ret.add(args[i++]);
-			}
-			return ret.toArray(new String[ret.size()]);
-		}else{
-			return args;
-		}
-	}
-	
 	@Command(aliases = {"!dodge"}, description="Dodge a spell in combat with (A)dvantage or (B)urden.", usage = "!dodge <A|B> <number of destiny points>, e.g. **!dodge B 1**", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
-		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
-			
-		String spellModifiers = "";
-		if(args.length > 1){
-			spellModifiers = args[1];
-		}
-		spellModifiers = spellModifiers.toLowerCase();
+		Player currentPlayer = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
-		boolean advantage = spellModifiers.contains("a");
-		boolean burden = spellModifiers.contains("b");
+		String dodgeModifier = "";
+		if(args.length > 0){
+			dodgeModifier = args[0];
+		}
+		dodgeModifier = dodgeModifier.toLowerCase();
+		
+		boolean advantage = dodgeModifier.contains("a");
+		boolean burden = dodgeModifier.contains("b");
 		
 		boolean hasSituation = advantage || burden;
 		
+		
 		String destinyModifier = "";
-		if (hasSituation && args.length > 2){
-			destinyModifier = args[2];
-		} else if (!hasSituation && args.length > 1){
+		if (hasSituation && args.length > 1){
 			destinyModifier = args[1];
+		} else if (!hasSituation && args.length > 0){
+			destinyModifier = args[0];
 		}
 		
 		int destinyPoints;
@@ -76,16 +55,15 @@ public class DodgeCommand implements CommandExecutor{
 			}
 		}
 		
-		if (!player.canUseDestinyPoints(destinyPoints)){
+		if (!currentPlayer.canUseDestinyPoints(destinyPoints)){
 			return user.mention() + " You don't have enough destiny to cast this spell!"; 
 		}
 		
-		player.useDestinyPoints(destinyPoints);
+		currentPlayer.useDestinyPoints(destinyPoints);
 		
-		DiceFormula formula = player.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDodgeDiceWithModifiers(advantage, burden, destinyPoints);
-		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
-		
+		DiceFormula formula = currentPlayer.getCurrentYear().getDiceFormula();
+		RollResult result = formula.rollDiceWithModifiers(advantage, burden, false, false, false, destinyPoints);
+				
 		StringBuilder ret = new StringBuilder();
 		
 		ret.append(user.mention() + " You rolled **" + result.getTotal() + "**");
@@ -97,7 +75,7 @@ public class DodgeCommand implements CommandExecutor{
 
 		if (destinyPoints > 0){
 			try {
-				DatabaseUtil.getPlayerDao().createOrUpdate(player);
+				DatabaseUtil.getPlayerDao().createOrUpdate(currentPlayer);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				ret.append("\n **Error - destiny points may not be properly updated**");
