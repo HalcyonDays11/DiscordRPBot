@@ -7,8 +7,6 @@ import java.util.List;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
-import com.dreaminsteam.rpbot.db.models.Spell;
-import com.dreaminsteam.rpbot.db.models.Spellbook;
 import com.dreaminsteam.rpbot.utilities.DiceFormula;
 import com.dreaminsteam.rpbot.utilities.RollResult;
 
@@ -55,8 +53,8 @@ public class DodgeCommand implements CommandExecutor{
 			}
 		}
 		
-		if (!currentPlayer.canUseDestinyPoints(destinyPoints)){
-			return user.mention() + " You don't have enough destiny to cast this spell!"; 
+		if (!player.canUseDestinyPoints(destinyPoints)){
+			return user.mention() + " You don't have enough destiny to do that!"; 
 		}
 		
 		currentPlayer.useDestinyPoints(destinyPoints);
