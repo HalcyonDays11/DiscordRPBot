@@ -1,5 +1,7 @@
 package com.dreaminsteam.rpbot.commands;
 
+import java.sql.SQLException;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import de.btobastian.sdcf4j.Command;
@@ -10,15 +12,26 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class WorkoutCommand implements CommandExecutor{
 	
+	public static final int POINTS_PER_WORKOUT = 3; //Why
+	
 	@Command(aliases = {"!workout"}, description="Get in your daily workout.", usage="!workout")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
-		public static final int POINTS_PER_WORK = 3; //Why
+		if(!player.canWorkoutToday()){
+			return user.mention() + " You're going to pull something!  You've already worked out once today.";
+		}
 		
-		return user.mention() + " Great workout!";
+		int currentAgility = player.getCurrentAgility();
+		player.setCurrentAgility(currentAgility + 1);
+		player.setCanWorkoutToday(false);
+		
+		try {
+			DatabaseUtil.getPlayerDao().update(player);
+			return user.mention() + " Great workout!";
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return user.mention() + " Uh... the gym wasn't working... try working out again.";
+		}
 	}
-		
 }
-
-//I have no idea what I'm doing...

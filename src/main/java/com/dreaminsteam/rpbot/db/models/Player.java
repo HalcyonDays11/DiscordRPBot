@@ -11,10 +11,12 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Player {
 
 	@DatabaseField(id = true) private String snowflakeId; // This is a Discord thing.  It's the global, unique identifier for the user.
-	@DatabaseField private String name; //Out of curiosity, will the database freak out if a player changes their name? I would assume note, but I'm not sure how/where it fixes a name change?
+	@DatabaseField private String name;
 	@DatabaseField private Date lastPracticedDate;
 	@DatabaseField private Year currentYear;
 	@DatabaseField private int usedDestiny = 0; 
+	@DatabaseField private int currentAgility = 0;
+	@DatabaseField private boolean canWorkoutToday = true;
 	
 	public Player() {
 		//ORMLite requires an empty constructor.
@@ -49,6 +51,14 @@ public class Player {
 		this.currentYear = currentYear;
 	}
 	
+	public int getCurrentAgility(){
+		return currentAgility;
+	}
+	
+	public void setCurrentAgility(int agility){
+		this.currentAgility = agility;
+	}
+	
 	public boolean canPracticeToday(Date today){
 		if(lastPracticedDate == null){
 			return true;
@@ -63,6 +73,14 @@ public class Player {
 		}else{
 			return true;
 		}
+	}
+	
+	public boolean canWorkoutToday(){
+		return canWorkoutToday;
+	}
+	
+	public void setCanWorkoutToday(boolean canWorkout){
+		this.canWorkoutToday = canWorkout;;
 	}
 	
 	public int getAvailableDestinyPoints(){
@@ -101,6 +119,8 @@ public class Player {
 	public void updateLastPracticeDate(Date today){
 		lastPracticedDate = today;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {

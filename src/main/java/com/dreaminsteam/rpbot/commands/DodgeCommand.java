@@ -2,8 +2,6 @@
 package com.dreaminsteam.rpbot.commands;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
@@ -53,7 +51,7 @@ public class DodgeCommand implements CommandExecutor{
 			}
 		}
 		
-		if (!player.canUseDestinyPoints(destinyPoints)){
+		if (!currentPlayer.canUseDestinyPoints(destinyPoints)){
 			return user.mention() + " You don't have enough destiny to do that!"; 
 		}
 		
