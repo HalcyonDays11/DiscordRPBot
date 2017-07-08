@@ -2,7 +2,7 @@ package com.dreaminsteam.rpbot.commands;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
-import com.dreaminsteam.rpbot.util.DestinyPointResetHandler;
+import com.dreaminsteam.rpbot.utilities.PlayerResetHandler;
 import com.dreaminsteam.rpbot.utilities.Year;
 
 import de.btobastian.sdcf4j.Command;
@@ -21,7 +21,7 @@ public class DestinyRestoreCommand implements CommandExecutor{
 			}
 			
 			if (args == null || args.length == 0){
-				DestinyPointResetHandler.resetAllDestinyPoints();
+				PlayerResetHandler.resetAllDestinyPoints();
 				
 				return user.mention() + " Success! All destiny points have been reset for all students!";
 			}

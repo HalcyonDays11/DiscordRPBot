@@ -34,6 +34,7 @@ public class DatabaseUtil {
 		spellDao = DaoManager.createDao(connectionSource, Spell.class);
 		playerDao = DaoManager.createDao(connectionSource, Player.class);
 		spellbookDao = DaoManager.createDao(connectionSource, Spellbook.class);
+		DatabaseMigration.performMigrations();
 	}
 	
 	public static void setupDbIfNecessary(boolean clearExisting) throws Exception{

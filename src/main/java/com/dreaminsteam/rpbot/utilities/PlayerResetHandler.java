@@ -1,4 +1,4 @@
-package com.dreaminsteam.rpbot.util;
+package com.dreaminsteam.rpbot.utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +15,7 @@ import javax.swing.text.DateFormatter;
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 import it.sauronsoftware.cron4j.Scheduler;
 
@@ -31,9 +32,8 @@ import it.sauronsoftware.cron4j.Scheduler;
  *  
  *  If at any point the program is unable to read the file, it will revert back to using these defaults.
  */
-public class DestinyPointResetHandler {
-	
-	
+public class PlayerResetHandler {
+
 	
 	private static final String path =  "DestinyPointReset.properties";
 
@@ -73,6 +73,8 @@ public class DestinyPointResetHandler {
 		
 		sched.schedule(cronTab, () -> {
 			resetAllDestinyPoints();
+			resetWorkout();
+			resetPractice();
 		});
 		
 		sched.start();
@@ -84,18 +86,31 @@ public class DestinyPointResetHandler {
 	
 	public static void resetAllDestinyPoints(){
 		Dao<Player, String> dao = DatabaseUtil.getPlayerDao();
-		
-		// there might be a better way to do this that doesn't involve raw db commands.
-		// the problem is that I don't think SQlite supports dropping a single column like this at all, 
-		// and ormlite is probably trying to cater to the lowest common denominator.
-		// (though maybe it's hidden away somewhere in some h2 specific subclass and I just couldn't find it??)
-		
-		// I suppose I could just iterate through each Player, but that sounds horribly inefficient.
 		try {
-			dao.executeRawNoArgs("ALTER TABLE players DROP COLUMN usedDestiny");
-			dao.executeRawNoArgs("ALTER TABLE players ADD usedDestiny INT");
-		} catch (SQLException e) {
-			e.printStackTrace();
+			UpdateBuilder<Player,String> updateColumn = dao.updateBuilder().updateColumnValue("usedDestiny", 0);
+			dao.update(updateColumn.prepare());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public static void resetWorkout(){
+		Dao<Player, String> dao = DatabaseUtil.getPlayerDao();
+		try {
+			UpdateBuilder<Player,String> updateColumn = dao.updateBuilder().updateColumnValue("canWorkoutToday", true);
+			dao.update(updateColumn.prepare());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public static void resetPractice(){
+		Dao<Player, String> dao = DatabaseUtil.getPlayerDao();
+		try {
+			UpdateBuilder<Player,String> updateColumn = dao.updateBuilder().updateColumnValue("canPracticeToday", true);
+			dao.update(updateColumn.prepare());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
 	

@@ -15,8 +15,7 @@ import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.SpellParser;
 import com.dreaminsteam.rpbot.discord.DiscordBot;
 import com.dreaminsteam.rpbot.discord.WittyStatuser;
-import com.dreaminsteam.rpbot.util.DestinyPointResetHandler;
-import com.dreaminsteam.rpbot.util.PathUtil;
+import com.dreaminsteam.rpbot.utilities.PlayerResetHandler;
 import com.dreaminsteam.rpbot.web.Webserver;
 
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -32,7 +31,7 @@ public class RPBot {
 	private Properties secrets = null;
 	
 	public boolean setup() throws Exception{
-		DestinyPointResetHandler.setupResetHandler();
+		PlayerResetHandler.setupResetHandler();
 		
 		webserver = new Webserver(4567);
 		webserver.initializeWebServer();
@@ -67,7 +66,7 @@ public class RPBot {
 	private void setupSecrets(){
 		URL resource = getClass().getClassLoader().getResource("Secrets.properties");
 		if(resource == null){
-			File configFile = PathUtil.getConfigFile("Secrets.properties");
+			File configFile = com.dreaminsteam.rpbot.utilities.PathUtil.getConfigFile("Secrets.properties");
 			try {
 				resource = configFile.toURI().toURL();
 			} catch (Throwable t) {

@@ -1,4 +1,4 @@
-package com.dreaminsteam.rpbot.util;
+package com.dreaminsteam.rpbot.utilities;
 
 import java.io.File;
 

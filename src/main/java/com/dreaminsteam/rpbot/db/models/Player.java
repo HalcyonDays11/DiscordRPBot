@@ -13,10 +13,12 @@ public class Player {
 	@DatabaseField(id = true) private String snowflakeId; // This is a Discord thing.  It's the global, unique identifier for the user.
 	@DatabaseField private String name;
 	@DatabaseField private Date lastPracticedDate;
+	@DatabaseField private Date lastWorkoutDate;
 	@DatabaseField private Year currentYear;
 	@DatabaseField private int usedDestiny = 0; 
 	@DatabaseField private int currentAgility = 0;
 	@DatabaseField private boolean canWorkoutToday = true;
+	@DatabaseField private boolean canPracticeToday = true;
 	
 	public Player() {
 		//ORMLite requires an empty constructor.
@@ -59,28 +61,16 @@ public class Player {
 		this.currentAgility = agility;
 	}
 	
+	public void allowWorkout(boolean workout){
+		this.canWorkoutToday = workout;
+	}
+	
 	public boolean canPracticeToday(Date today){
-		if(lastPracticedDate == null){
-			return true;
-		}
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(lastPracticedDate);
-		calendar.add(Calendar.DAY_OF_YEAR, 1);
-		
-		if(calendar.getTime().after(today)){
-			return false;
-		}else{
-			return true;
-		}
+		return canPracticeToday;
 	}
 	
 	public boolean canWorkoutToday(){
 		return canWorkoutToday;
-	}
-	
-	public void setCanWorkoutToday(boolean canWorkout){
-		this.canWorkoutToday = canWorkout;;
 	}
 	
 	public int getAvailableDestinyPoints(){
@@ -118,6 +108,16 @@ public class Player {
 	
 	public void updateLastPracticeDate(Date today){
 		lastPracticedDate = today;
+		canPracticeToday = false;
+	}
+	
+	public void allowPractice(boolean practice){
+		this.canPracticeToday = practice;
+	}
+	
+	public void updateLastWorkoutDate(Date today){
+		lastWorkoutDate = today;
+		canWorkoutToday = false;
 	}
 	
 	

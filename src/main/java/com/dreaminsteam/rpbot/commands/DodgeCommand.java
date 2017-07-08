@@ -59,7 +59,9 @@ public class DodgeCommand implements CommandExecutor{
 		
 		DiceFormula formula = currentPlayer.getCurrentYear().getDiceFormula();
 		RollResult result = formula.rollDiceWithModifiers(advantage, burden, false, false, false, destinyPoints);
-				
+		
+		result.setPersonalModifier(currentPlayer.getCurrentAgility() / WorkoutCommand.POINTS_PER_WORKOUT);
+		
 		StringBuilder ret = new StringBuilder();
 		
 		ret.append(user.mention() + " You rolled **" + result.getTotal() + "**");

@@ -1,6 +1,7 @@
 package com.dreaminsteam.rpbot.commands;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
@@ -24,7 +25,7 @@ public class WorkoutCommand implements CommandExecutor{
 		
 		int currentAgility = player.getCurrentAgility();
 		player.setCurrentAgility(currentAgility + 1);
-		player.setCanWorkoutToday(false);
+		player.updateLastWorkoutDate(new Date());
 		
 		try {
 			DatabaseUtil.getPlayerDao().update(player);
