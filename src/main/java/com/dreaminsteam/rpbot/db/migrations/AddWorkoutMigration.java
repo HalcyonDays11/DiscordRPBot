@@ -18,7 +18,7 @@ public class AddWorkoutMigration extends DatabaseMigration<Player, String>{
 		}
 		catch(SQLException e){
 			try {
-				dao.executeRawNoArgs("IF NOT EXISTS TABLEALTER TABLE players ADD COLUMN canWorkoutToday BOOLEAN;");
+				dao.executeRawNoArgs("ALTER TABLE players ADD COLUMN canWorkoutToday BOOLEAN;");
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 			}
