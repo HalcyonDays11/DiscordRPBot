@@ -23,6 +23,10 @@ public class DiceRoller {
 		String typeOfDiceStr = split[1];
 		int typeOfDice = Integer.parseInt(typeOfDiceStr);
 		
+		if(typeOfDice < 1){
+			return new ArrayList<Integer>();
+		}
+		
 		List<Integer> results = new ArrayList<>();
 		for(int i = 0; i < numberOfDice; i++){
 			results.add(rando.nextInt(typeOfDice) + 1);

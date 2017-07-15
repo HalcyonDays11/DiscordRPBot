@@ -8,14 +8,15 @@ public class DiceFormula {
 	private DiceType die; //names the properties
 	private int defaultModifier; 
 	
-	public void setStandardModifier(int modifier){
-		this.defaultModifier = modifier;
-	}
 	
 	public DiceFormula(DiceType die, int defaultModifier){ //shows how the properties are listed
 		this.die = die;
 		this.defaultModifier = defaultModifier;
 	} 
+
+	public void setStandardModifier(int modifier){
+		this.defaultModifier = modifier;
+	}
 	
 	public RollResult rollDiceDefault(){
 		String formula = "1d" + die.getDieValue(); //go to that list below and pull the value that's in the ()
@@ -42,17 +43,21 @@ public class DiceFormula {
 			maxModifier = maxModifier - 1;
 		}
 		if(noWords){
-			dieToRoll = Math.max(dieToRoll-3, 0); //Defines the new die, which is the current die-5, no less than 0.
+			dieToRoll = Math.max(dieToRoll-3, 0); //Defines the new die, which is the current die-3, no less than 0.
 			modifier = modifier / 2;
 		}
 		if(noWand){
-			dieToRoll = Math.max(dieToRoll-5, 0); //Defines the new die, which is the current die-2, no less than 0.
+			dieToRoll = Math.max(dieToRoll-5, 0); //Defines the new die, which is the current die-5, no less than 0.
 			modifier = 0;
 		}
 		
 		DiceType die = DiceType.values()[dieToRoll];
 		String formula = "1d" + die.getDieValue();
 		List<Integer> dieRoll = DiceRoller.rollThemBones(formula);
+		if(dieRoll.isEmpty()){
+			//If the dieRoll is empty, special case to just return 0.
+			return new RollResult(formula, dieRoll, 0, 0, 0);
+		}
 		return new RollResult(formula, dieRoll, modifier, maxModifier, destiny);
 	}
 	
