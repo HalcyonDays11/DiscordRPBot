@@ -56,7 +56,7 @@ public class DiceFormula {
 		List<Integer> dieRoll = DiceRoller.rollThemBones(formula);
 		if(dieRoll.isEmpty()){
 			//If the dieRoll is empty, special case to just return 0.
-			return new RollResult(formula, dieRoll, 0, 0, 0);
+			return new RollResult(formula, true);
 		}
 		return new RollResult(formula, dieRoll, modifier, maxModifier, destiny);
 	}

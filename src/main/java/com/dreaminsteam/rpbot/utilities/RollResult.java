@@ -10,6 +10,7 @@ public class RollResult {
 	private int modifier;
 	private int personalModifier;
 	private String rollFormula;
+	private boolean instaFail = false;
 	
 	private int theoreticalModifier;
 	
@@ -17,6 +18,11 @@ public class RollResult {
 	
 	public RollResult(String rollFormula, List<Integer> diceRolls){
 		this(rollFormula, diceRolls, 0, 0, 0);
+	}
+	
+	public RollResult(String rollFormula, boolean instaFail){
+		this(rollFormula, new ArrayList<Integer>(), 0);
+		this.instaFail = instaFail;
 	}
 	
 	public RollResult(String rollFormula, List<Integer> diceRolls, int modifier){
@@ -48,7 +54,9 @@ public class RollResult {
 	}
 	
 	public void setPersonalModifier(int personalModifier){
-		this.personalModifier = personalModifier;
+		if(!instaFail){
+			this.personalModifier = personalModifier;
+		}
 	}
 	
 	public int getPersonalModifier(){
