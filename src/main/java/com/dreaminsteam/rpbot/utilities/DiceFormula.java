@@ -2,9 +2,15 @@ package com.dreaminsteam.rpbot.utilities;
 
 import java.util.List;
 
+
+
 public class DiceFormula {
 	private DiceType die; //names the properties
 	private int defaultModifier; 
+	
+	public void setStandardModifier(int modifier){
+		this.defaultModifier = modifier;
+	}
 	
 	public DiceFormula(DiceType die, int defaultModifier){ //shows how the properties are listed
 		this.die = die;
@@ -36,10 +42,12 @@ public class DiceFormula {
 			maxModifier = maxModifier - 1;
 		}
 		if(noWords){
-			dieToRoll = Math.max(dieToRoll-1, 0); //Defines the new die, which is the current die-1, no less than 0.
+			dieToRoll = Math.max(dieToRoll-3, 0); //Defines the new die, which is the current die-5, no less than 0.
+			modifier = modifier / 2;
 		}
 		if(noWand){
-			dieToRoll = Math.max(dieToRoll-2, 0); //Defines the new die, which is the current die-2, no less than 0.
+			dieToRoll = Math.max(dieToRoll-5, 0); //Defines the new die, which is the current die-2, no less than 0.
+			modifier = 0;
 		}
 		
 		DiceType die = DiceType.values()[dieToRoll];
@@ -49,15 +57,19 @@ public class DiceFormula {
 	}
 	
 	public static enum DiceType{ //list of DiceType. defined as name (D4) value (4) and placement in the list (0)
-		D4(4), //This is 0
-		D6(6), //This is 1
-		D8(8), //This is 2
-		D10(10), //This is 3
-		D12(12), //This is 4
-		D14(14), //This is 5
-		D16(16), //This is 6
-		D18(18), //This is 7
-		D20(20); //This is 8
+		D0(0), //This is 0
+		D2(2), //This is 1
+		D4(4), //This is 2
+		D6(6), //This is 3
+		D8(8), //This is 4
+		D10(10), //This is 5
+		D12(12), //This is 6
+		D14(14), //This is 7
+		D16(16), //This is 8
+		D18(18), //This is 9
+		D20(20), //This is 10
+		D22(22); //This is 11
+		
 		
 		private int dieValue;
 		private DiceType(int dieValue){

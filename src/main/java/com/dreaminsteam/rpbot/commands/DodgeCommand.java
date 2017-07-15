@@ -56,9 +56,9 @@ public class DodgeCommand implements CommandExecutor{
 		}
 		
 		currentPlayer.useDestinyPoints(destinyPoints);
-		
-		DiceFormula formula = currentPlayer.getCurrentYear().getDiceFormula();
-		RollResult result = formula.rollDiceWithModifiers(advantage, burden, false, false, false, destinyPoints);
+		formula.setStandardModifier(0); //wtf am I doing..... this is so not right...
+		DiceFormula formula = currentPlayer.getCurrentYear().getDiceFormula(); 
+		RollResult result =  formula.rollDiceWithModifiers(advantage, burden, false, false, false, destinyPoints);
 		
 		result.setPersonalModifier(currentPlayer.getCurrentAgility() / WorkoutCommand.POINTS_PER_WORKOUT);
 		

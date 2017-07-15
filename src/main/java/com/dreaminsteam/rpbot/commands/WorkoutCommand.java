@@ -13,7 +13,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class WorkoutCommand implements CommandExecutor{
 	
-	public static final int POINTS_PER_WORKOUT = 3; //Why
+	public static final int POINTS_PER_WORKOUT = 28; //Why
 	
 	@Command(aliases = {"!workout"}, description="Get in your daily workout.", usage="!workout")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
