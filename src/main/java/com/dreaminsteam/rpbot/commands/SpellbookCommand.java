@@ -18,13 +18,13 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class SpellbookCommand implements CommandExecutor{
 
-	@Command(aliases = {"!spellbook"}, description="See your own stats with a specific spell.", usage="!spellbook <incantation>")
+	@Command(aliases = {"!spellbook"}, description="See your own stats with a specific spell, or total.", usage="!spellbook <incantation>")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(args.length < 1){
 			listAllSpells(user, player.getSnowflakeId(), false);
-			return user.mention() + " Information has been DM'd to you.";
+			return user.mention() + "  Information has been DM'd to you.";
 		}
 		
 		args = CastCommand.normalizeArgs(args);
@@ -37,10 +37,10 @@ public class SpellbookCommand implements CommandExecutor{
 		if(spellStr.matches("^[0-9]+$")){
 			boolean hasAdminRole = CommandUtils.hasAdminRole(user, channel);
 			if(!hasAdminRole){
-				return user.mention() + " Woah, now... you can't just go looking at other people's spellbooks.";
+				return user.mention() + "  Woah, now... you can't just go looking at other people's spellbooks.";
 			}
 			listAllSpells(user, spellStr, true);
-			return user.mention() + " Information has been DM'd to you.";
+			return user.mention() + "  Information has been DM'd to you.";
 		}
 		
 		spellStr = spellStr.toLowerCase();
@@ -55,7 +55,7 @@ public class SpellbookCommand implements CommandExecutor{
 			StringBuilder sb = new StringBuilder();
 			listIndividualSpellbook(spellbook, sb);
 			user.getOrCreatePMChannel().sendMessage(sb.toString());
-			return user.mention() + " Information has been DM'd to you.";
+			return user.mention() + "  Information has been DM'd to you.";
 		}
 		return null;
 	}
@@ -68,14 +68,14 @@ public class SpellbookCommand implements CommandExecutor{
 			pmChannel.sendMessage("Spellbooks for player id: " + playerSnowflakeId);
 		}
 		iterateThroughSpellbooks(spellbooks, pmChannel, other);
-		return user.mention() + " Information has been DM'd to you.";
+		return user.mention() + "  Information has been DM'd to you.";
 	}
 	
 	private void iterateThroughSpellbooks(List<Spellbook> spellbooks, IPrivateChannel pmChannel, boolean other){
 		if(spellbooks.isEmpty()){
 			pmChannel.sendMessage(other ? "They" : "You" + " have not practiced any spells.");
 		}else{
-			StringBuilder sb = new StringBuilder(other ? "They" : "You" + " have practiced the following spells: \n");
+			StringBuilder sb = new StringBuilder(other ? "They" : "You" + " have practiced the following spells: \n"); //this is broke, but I think it's a syntax error, and I don't know enough about it to know what the issue is. When if Returns "They", it doesn't return the rest of the line, (Haven't practiced yada yada)
 			for(int i = 0; i < spellbooks.size(); i++){
 				Spellbook spellbook = spellbooks.get(i);
 				listIndividualSpellbook(spellbook, sb);

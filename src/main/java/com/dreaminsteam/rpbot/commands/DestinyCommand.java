@@ -18,10 +18,10 @@ public class DestinyCommand implements CommandExecutor {
 		
 		if (args.length > 0 && args[0].equalsIgnoreCase("total")){
 			Year year = player.getCurrentYear();
-			return user.mention() + " Your rank of " + year.getPrettyName() + " affords you " + year.getDailyDestinyPoints() + " daily destiny points.";
-		}
+			return user.mention() + "  Your rank of " + year.getPrettyName() + " affords you " + year.getDailyDestinyPoints() + " daily destiny points.";
+		} //How does this return? I've never actually seen this come up lol.
 		
-		return user.mention() + " You have " + player.getAvailableDestinyPoints() + " destiny points remaining for today."; 
+		return user.mention() + "  You have " + player.getAvailableDestinyPoints() + " destiny points remaining for today."; 
 		
 		
 				

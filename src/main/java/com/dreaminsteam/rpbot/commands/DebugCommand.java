@@ -18,7 +18,7 @@ public class DebugCommand implements CommandExecutor {
 		sb.append("\n");
 		sb.append("**channel:** " + channel.getName());
 		sb.append("\n");
-		sb.append("**command:**" + command);
+		sb.append("**command:** " + command);
 		sb.append("\n");
 		sb.append("**arguments:** " + args.length);
 		for (String arg : args){

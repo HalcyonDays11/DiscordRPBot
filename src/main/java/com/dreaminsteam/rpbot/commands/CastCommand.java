@@ -42,12 +42,12 @@ public class CastCommand implements CommandExecutor{
 		}
 	}
 	
-	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)ssistance, (B)urden, in (C)ombat, non-(V)erbal, or (W)andless.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. **!cast lumos A 1**", async = true)
+	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)ssistance, (B)urden, in (C)ombat, non-(V)erbal, or (W)andless.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. *!cast lumos A 1*", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(args.length < 1){
-			return user.mention() + " attempts to cast all spells and no spells the same time. Almost destroys the castle. Great job!";	
+			return user.mention() + "  attempts to cast all spells and no spells the same time. Almost destroys the castle. Great job!";	
 		}
 		
 		args = normalizeArgs(args);
@@ -55,7 +55,7 @@ public class CastCommand implements CommandExecutor{
 		String spellStr = args[0];
 		
 		if(spellStr == null || spellStr.isEmpty()){
-			return user.mention() + " attempts to cast all spells and no spells the same time. Almost destroys the castle. Great job!";
+			return user.mention() + "  attempts to cast all spells and no spells the same time. Almost destroys the castle. Great job!";
 		}
 		spellStr = spellStr.toLowerCase();
 		
@@ -65,7 +65,7 @@ public class CastCommand implements CommandExecutor{
 		}
 		
 		if (spell.getDC() <= 0){
-			return user.mention() + "  The spell \"" + spellStr + "\" appears in the spell list, but has not been assigned a difficulty value.  Ask your professor to update the spreadsheet.";
+			return user.mention() + "  The spell \"" + spellStr + "\" appears in the spell list, but has not been assigned a difficulty value. Ask your professor to update the spreadsheet.";
 		}
 		
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
@@ -104,7 +104,7 @@ public class CastCommand implements CommandExecutor{
 		}
 		
 		if (!player.canUseDestinyPoints(destinyPoints)){
-			return user.mention() + " You don't have enough destiny to cast this spell!"; 
+			return user.mention() + "  You don't have enough destiny to cast this spell!"; 
 		}
 		
 		player.useDestinyPoints(destinyPoints);
@@ -124,6 +124,9 @@ public class CastCommand implements CommandExecutor{
 			}else{
 				ret.append(user.mention() + " ** Spell Failed! **");
 			}
+		}
+		if(result.isInstaFail()){
+			return(user.mention() + "  You're not powerful enough to do that!");
 		}
 		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
 		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 

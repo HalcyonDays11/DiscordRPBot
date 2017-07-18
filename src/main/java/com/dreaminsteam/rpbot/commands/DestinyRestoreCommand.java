@@ -13,17 +13,17 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class DestinyRestoreCommand implements CommandExecutor{
 		
-		@Command(aliases = {"!restoreDestiny"}, description="Admin Only! Restore Destiny Points.", usage = "!resetDestiny [playerId] [number of points to restore]", async = true)
+		@Command(aliases = {"!restoreDestiny"}, description="Restore Destiny Points for an individual, or the entire server. **Admin Only!**", usage = "!restoreDestiny <playerId> <number of points to restore>", async = true)
 		public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception {
 			
 			if(!CommandUtils.hasAdminRole(user, channel)){
-				return user.mention() + " Sorry, you are not yet a master of your own destiny.";
+				return user.mention() + "  Sorry, you are not yet a master of your own destiny.";
 			}
 			
 			if (args == null || args.length == 0){
 				PlayerResetHandler.resetAllDestinyPoints();
 				
-				return user.mention() + " Success! All destiny points have been reset for all students!";
+				return user.mention() + "  Success! All destiny points have been reset for all students!";
 			}
 			
 			String playerId = args[0];
@@ -44,7 +44,7 @@ public class DestinyRestoreCommand implements CommandExecutor{
 			
 			DatabaseUtil.getPlayerDao().update(player);
 			
-			return user.mention() + " Success! " + player.getName() + " now has " + player.getAvailableDestinyPoints() + " destiny points for today.";
+			return user.mention() + "  Success! " + player.getName() + " now has **" + player.getAvailableDestinyPoints() + "** destiny points for today.";
 			
 		}
 }

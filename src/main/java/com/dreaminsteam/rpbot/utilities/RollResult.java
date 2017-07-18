@@ -94,4 +94,8 @@ public class RollResult {
 	public void setTheoreticalModifier(int theoreticalModifier) {
 		this.theoreticalModifier = theoreticalModifier;
 	}
+
+	public boolean isInstaFail() {
+		return instaFail;
+	}
 }

@@ -16,7 +16,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class ModifySpellbookCommand implements CommandExecutor{
 	
-	@Command(aliases = "!modifySpellbook", description="Admin Only!  Modify a player's spellbook.", usage="!modifySpellbook [playerId] [incantation] [newModifier], e.g. !modifySpellbook 123456 lumos 2", async=true)
+	@Command(aliases = "!modifySpellbook", description="Modify a player's spellbook. **Admin Only!**", usage="!modifySpellbook [playerId] [incantation] [newModifier], e.g. *!modifySpellbook 123456 lumos 2*", async=true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		boolean hasAdminRole = CommandUtils.hasAdminRole(user, channel);
 		if(!hasAdminRole){
@@ -34,12 +34,12 @@ public class ModifySpellbookCommand implements CommandExecutor{
 		Player player = DatabaseUtil.getPlayerDao().queryForId(playerId);
 		
 		if(player == null){
-			return "I can't find a player with that ID... try using !playerInfo to get the list of players.";
+			return "I can't find a player with that ID... try using **!playerInfo** to get the list of players.";
 		}
 		
 		Spell spell = DatabaseUtil.getSpellDao().queryForId(incantation);
 		if(spell == null){
-			return "I can't find a spell with that incanataion... try using lookup.";
+			return "I can't find a spell with that incanataion... try using **!lookup** to get a list of spells.";
 		}
 		
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
@@ -50,9 +50,9 @@ public class ModifySpellbookCommand implements CommandExecutor{
 			DatabaseUtil.getSpellbookDao().createOrUpdate(spellbook);
 		}catch(Exception e){
 			e.printStackTrace();
-			return "I... don't think your modifier is a real number.  Try again?";
+			return "I... don't think your modifier is a real number. Try again?";
 		}
-		return user.mention() + " Spellbook has been modified.";
+		return user.mention() + "  Spellbook has been modified.";
 	}
 
 }

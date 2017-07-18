@@ -38,7 +38,7 @@ public class Spellbook {
 	}
 	
 	public boolean hasMastered(){
-		return currentIndividualModifierPoints/POINTS_PER_BONUS >= spell.getDC();
+		return currentIndividualModifierPoints/POINTS_PER_BONUS >= (spell.getDC() -1);
 	}
 	
 	public int getIndividualModifier(int maxModifier){

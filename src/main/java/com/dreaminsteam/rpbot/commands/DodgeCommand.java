@@ -16,7 +16,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class DodgeCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!dodge"}, description="Dodge a spell in combat with (A)dvantage or (B)urden.", usage = "!dodge <A|B> <number of destiny points>, e.g. **!dodge B 1**", async = true)
+	@Command(aliases = {"!dodge"}, description="Dodge a spell in combat with (A)dvantage or (B)urden.", usage = "!dodge <A|B> <number of destiny points>, e.g. *!dodge B 1*", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player currentPlayer = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
@@ -52,7 +52,7 @@ public class DodgeCommand implements CommandExecutor{
 		}
 		
 		if (!currentPlayer.canUseDestinyPoints(destinyPoints)){
-			return user.mention() + " You don't have enough destiny to do that!"; 
+			return user.mention() + "  You don't have enough destiny to do that!"; 
 		}
 		
 		currentPlayer.useDestinyPoints(destinyPoints);
@@ -64,7 +64,7 @@ public class DodgeCommand implements CommandExecutor{
 		
 		StringBuilder ret = new StringBuilder();
 		
-		ret.append(user.mention() + " You rolled **" + result.getTotal() + "**");
+		ret.append(user.mention() + "  You rolled **" + result.getTotal() + "**");
 		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 
 				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
 				" + " + result.getPersonalModifier() + 

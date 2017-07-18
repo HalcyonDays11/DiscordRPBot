@@ -17,12 +17,12 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class LearnCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!learn"}, description="Attempt to practice a spell.", usage="!learn [spell] <A|B|C|V|W>, e.g. !learn lumos A")
+	@Command(aliases = {"!learn"}, description="Attempt to practice a spell.", usage="!learn [spell] <A|B|C|V|W> <number of destiny points>, e.g. *!learn lumos A 1*")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(args.length < 1){
-			return user.mention() + " attempts to learn without specifying *what* to learn, and so ends up surfing the internet instead of studying.";
+			return user.mention() + "  attempts to learn without specifying *what* to learn, and so ends up surfing the internet instead of studying.";
 		}
 		
 		args = CastCommand.normalizeArgs(args);
@@ -34,7 +34,7 @@ public class LearnCommand implements CommandExecutor{
 		
 		Date today = new Date();
 		if(!player.canPracticeToday(today)){
-			return user.mention() + " You've already practiced a spell today!  Try again tomorrow.";
+			return user.mention() + "  You've already practiced a spell today! Try again tomorrow.";
 		}
 		
 		Spell spell = DatabaseUtil.findSpell(spellStr);
@@ -45,7 +45,7 @@ public class LearnCommand implements CommandExecutor{
 		Spellbook spellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
 		
 		if(spellbook.hasMastered()){
-			return user.mention() + " You've already mastered this spell!";
+			return user.mention() + "  You've already mastered this spell!";
 		}
 		
 		String spellModifiers = "";
@@ -82,7 +82,7 @@ public class LearnCommand implements CommandExecutor{
 		}
 		
 		if (!player.canUseDestinyPoints(destinyPoints)){
-			return user.mention() + " You don't have enough destiny to practice this spell!"; 
+			return user.mention() + "  You don't have enough destiny to practice this spell!"; 
 		}
 		
 		player.useDestinyPoints(destinyPoints);

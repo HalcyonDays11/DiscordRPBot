@@ -16,7 +16,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class LookupCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!lookup"}, description="Lookup spell information and DC.", usage = "!lookup <spellIncantation>", async = true)
+	@Command(aliases = {"!lookup"}, description="Lookup spell information and DC, or get a list of all spells.", usage = "!lookup <spellIncantation>", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception{
 		
 		if (args.length == 0){
@@ -42,7 +42,7 @@ public class LookupCommand implements CommandExecutor{
 			if (count > 0){
 				apiClient.getOrCreatePMChannel(user).sendMessage(ret.toString());
 			}
-			return user.mention() + " Information has been DM'd to you.";
+			return user.mention() + "  Information has been DM'd to you.";
 		}  else {	
 			args = CastCommand.normalizeArgs(args);
 			

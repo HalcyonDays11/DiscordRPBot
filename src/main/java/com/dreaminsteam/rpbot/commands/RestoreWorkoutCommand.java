@@ -12,17 +12,17 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class RestoreWorkoutCommand implements CommandExecutor{
 
-	@Command(aliases = {"!restoreWorkouts"}, description="Admin Only! Restore the ability to workout for the day.", usage = "!restoreWorkouts [playerId]", async = true)
+	@Command(aliases = {"!restoreWorkouts"}, description="Restore the ability to workout for the day for an individual, or the entire server. **Admin Only!**", usage = "!restoreWorkouts <playerId>", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args) throws Exception {
 		
 		if(!CommandUtils.hasAdminRole(user, channel)){
-			return user.mention() + " Sorry, you're just not swole enough.";
+			return user.mention() + "  Sorry, you're just not swole enough.";
 		}
 		
 		if (args == null || args.length == 0){
 			PlayerResetHandler.resetWorkout();
 			
-			return user.mention() + " Success! Workouts have been enabled for all students.";
+			return user.mention() + "  Success! Workouts have been enabled for all students.";
 		}
 		
 		String playerId = args[0];
@@ -36,7 +36,7 @@ public class RestoreWorkoutCommand implements CommandExecutor{
 		
 		DatabaseUtil.getPlayerDao().update(player);
 		
-		return user.mention() + " Success! " + player.getName() + " can workout again today.";
+		return user.mention() + "  Success! " + player.getName() + " can workout again today.";
 		
 	}
 }
