@@ -33,23 +33,32 @@ public class DiceFormula {
 		int modifier = standardModifier;
 		
 		if(withAdvantage){
-			dieToRoll = Math.min(dieToRoll+1, DiceType.values().length - 1); //Defines the new die, which is the current die+1, no greater than the max dice option.
+			//Go up one die level.
+			dieToRoll = dieToRoll + 1;
+		}
+		if(noWords){
+			//Go down 6 die, your modifier is cut in half.
+			dieToRoll = dieToRoll - 6;
+			modifier = modifier / 2;
 		}
 		if(inCombat){
+			//No modifier bonus.
+			modifier = 0;
+		}
+		if(noWand){
+			//Go down 7 die, your modifier is 0.
+			dieToRoll = dieToRoll-7;
 			modifier = 0;
 		}
 		if(withBurden){
+			//Modifier bonus and possible bonus decrease by one point. 
 			modifier = modifier - 1;
 			maxModifier = maxModifier - 1;
 		}
-		if(noWords){
-			dieToRoll = Math.max(dieToRoll-6, 0); //Defines the new die, which is the current die-3, no less than 0.
-			modifier = modifier / 2;
-		}
-		if(noWand){
-			dieToRoll = Math.max(dieToRoll-7, 0); //Defines the new die, which is the current die-5, no less than 0.
-			modifier = 0;
-		}
+		
+		//This will cap the dieToRoll... no smaller than 0, no bigger than the last DiceType value.
+		dieToRoll = Math.max(dieToRoll, 0); //The bigger of dieToRoll or zero
+		dieToRoll = Math.min(dieToRoll, DiceType.values().length - 1); //The smaller of dieRoll or the highest die.
 		
 		DiceType die = DiceType.values()[dieToRoll];
 		String formula = "1d" + die.getDieValue();
@@ -73,11 +82,8 @@ public class DiceFormula {
 		D14(14), //This is 8
 		D16(16), //This is 9
 		D18(18), //This is 10
-		D15(20), //This is 11 Placeholder to compensate for stacking non-verbal and wandless casting
-		D17(20), //This is 12 Placeholder to compensate for stacking non-verbal and wandless casting
-		D19(20), //This is 13 Placeholder to compensate for stacking non-verbal and wandless casting
-		D20(20), //This is 14
-		D22(22); //This is 15
+		D20(20), //This is 11
+		D22(22); //This is 12
 		
 		
 		private int dieValue;
