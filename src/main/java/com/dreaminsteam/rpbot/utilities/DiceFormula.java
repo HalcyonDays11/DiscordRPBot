@@ -7,11 +7,17 @@ import java.util.List;
 public class DiceFormula {
 	private DiceType die; //names the properties
 	private int defaultModifier; 
+	private int penaltyBuffer;
+	
+	public static final int BASE_ADVANTAGE_BONUS = 1;
+	public static final int BASE_NONVERBAL_PENALTY = 6;
+	public static final int BASE_WANDLESS_PENALTY = 7;
 	
 	
-	public DiceFormula(DiceType die, int defaultModifier){ //shows how the properties are listed
+	public DiceFormula(DiceType die, int defaultModifier, int penaltyBuffer){ //shows how the properties are listed
 		this.die = die;
 		this.defaultModifier = defaultModifier;
+		this.penaltyBuffer = penaltyBuffer;
 	} 
 
 	public void setStandardModifier(int modifier){
@@ -34,11 +40,11 @@ public class DiceFormula {
 		
 		if(withAdvantage){
 			//Go up one die level.
-			dieToRoll = dieToRoll + 1;
+			dieToRoll = dieToRoll + BASE_ADVANTAGE_BONUS;
 		}
 		if(noWords){
-			//Go down 6 die, your modifier is cut in half.
-			dieToRoll = dieToRoll - 6;
+			//Go down by some die, your modifier is cut in half.
+			dieToRoll = dieToRoll - (BASE_NONVERBAL_PENALTY - penaltyBuffer);
 			modifier = modifier / 2;
 		}
 		if(inCombat){
@@ -46,8 +52,8 @@ public class DiceFormula {
 			modifier = 0;
 		}
 		if(noWand){
-			//Go down 7 die, your modifier is 0.
-			dieToRoll = dieToRoll-7;
+			//Go down some die, your modifier is 0.
+			dieToRoll = dieToRoll - BASE_WANDLESS_PENALTY;
 			modifier = 0;
 		}
 		if(withBurden){
