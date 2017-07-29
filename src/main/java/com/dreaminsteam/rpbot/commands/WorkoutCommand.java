@@ -27,7 +27,7 @@ public class WorkoutCommand implements CommandExecutor{
 		}
 		
 		int currentAgility = player.getCurrentAgility();
-		int agilityProgress = player.getCurrentAgility() % POINTS_PER_WORKOUT;
+		int agilityProgress = player.getCurrentAgility() / POINTS_PER_WORKOUT;
 		player.setCurrentAgility(currentAgility + 1);
 		player.updateLastWorkoutDate(new Date());
 		

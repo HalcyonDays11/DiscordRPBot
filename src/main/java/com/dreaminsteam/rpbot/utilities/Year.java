@@ -32,7 +32,7 @@ public enum Year {
 	}
 	
 	public DiceFormula getDiceFormula(){
-		return formula;
+		return formula.copy();
 	}
 	
 	public String getPrettyName(){

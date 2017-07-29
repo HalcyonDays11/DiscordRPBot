@@ -2,8 +2,6 @@ package com.dreaminsteam.rpbot.utilities;
 
 import java.util.List;
 
-
-
 public class DiceFormula {
 	private DiceType die; //names the properties
 	private int defaultModifier; 
@@ -74,6 +72,10 @@ public class DiceFormula {
 			return new RollResult(formula, true);
 		}
 		return new RollResult(formula, dieRoll, modifier, maxModifier, destiny);
+	}
+	
+	public DiceFormula copy(){
+		return new DiceFormula(this.die, this.defaultModifier, this.penaltyBuffer);
 	}
 	
 	public static enum DiceType{ //list of DiceType. defined as name (D0) value (0) and placement in the list (0)
