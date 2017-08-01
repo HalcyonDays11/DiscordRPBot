@@ -1,6 +1,7 @@
 package com.dreaminsteam.rpbot;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -9,6 +10,9 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.h2.engine.Database;
+import org.pmw.tinylog.Configurator;
+import org.pmw.tinylog.Level;
+import org.pmw.tinylog.writers.ConsoleWriter;
 import org.reflections.Reflections;
 
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
@@ -31,6 +35,7 @@ public class RPBot {
 	private Properties secrets = null;
 	
 	public boolean setup() throws Exception{
+		initializeLoggingFramework();
 		PlayerResetHandler.setupResetHandler();
 		
 		webserver = new Webserver(4567);
@@ -61,6 +66,14 @@ public class RPBot {
 		DatabaseUtil.setupDbIfNecessary(false);
 		SpellParser.parseSpells();
 		return true;
+	}
+	
+	private void initializeLoggingFramework(){
+		Configurator.defaultConfig()
+			.writer(new org.pmw.tinylog.writers.FileWriter("./logs/rpbot.log"))
+			.addWriter(new ConsoleWriter())
+			.level(Level.INFO)
+			.activate();
 	}
 	
 	private void setupSecrets(){

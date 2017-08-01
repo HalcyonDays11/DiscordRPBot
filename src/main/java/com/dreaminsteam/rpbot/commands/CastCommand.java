@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
@@ -139,7 +141,7 @@ public class CastCommand implements CommandExecutor{
 			try {
 				DatabaseUtil.getPlayerDao().createOrUpdate(player);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				Logger.error(e);
 				ret.append("\n **Error - destiny points may not be properly updated**");
 			}
 		}

@@ -2,6 +2,8 @@ package com.dreaminsteam.rpbot.commands;
 
 import java.util.Date;
 
+import org.pmw.tinylog.Logger;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
@@ -123,7 +125,7 @@ public class LearnCommand implements CommandExecutor{
 			DatabaseUtil.getSpellbookDao().createOrUpdate(spellbook);
 			DatabaseUtil.getPlayerDao().createOrUpdate(player);
 		}catch(Exception e){
-			e.printStackTrace();
+			Logger.error(e, "Error updating spellbook or player.");
 			return "Couldn't store result!  Practice never happened.";
 		}
 		

@@ -2,6 +2,8 @@ package com.dreaminsteam.rpbot.commands;
 
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
@@ -49,7 +51,7 @@ public class ModifySpellbookCommand implements CommandExecutor{
 			spellbook.setModifier(modifier);
 			DatabaseUtil.getSpellbookDao().createOrUpdate(spellbook);
 		}catch(Exception e){
-			e.printStackTrace();
+			Logger.error(e, "Error attempting to update spellbook.");
 			return "I... don't think your modifier is a real number. Try again?";
 		}
 		return user.mention() + "  Spellbook has been modified.";

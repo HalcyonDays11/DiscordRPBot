@@ -14,6 +14,7 @@ import java.util.Set;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.pmw.tinylog.Logger;
 
 import com.dreaminsteam.rpbot.db.models.Spell;
 import com.dreaminsteam.rpbot.utilities.GoogleDriveIntegration;
@@ -28,10 +29,9 @@ public class SpellParser {
 			outputStream = GoogleDriveIntegration.getSpellListAsOutputStream();
 			System.out.println("successfully connected to Google Drive for the spell list");
 		} catch (Exception e){
-			e.printStackTrace(System.err);
-			System.err.println("There was an error connecting with Google Drive.  The bot will start, using the most recent cached list of spells (which may be no spells)");
-			System.err.println("Check your internet connection, and make sure you have provided the client_secrets.json file.");
-			System.err.println("You may also try removing your cached credentials, which are stored in ~/.credentials/discord-rp-bot/StoredCredential on OSX/linux,"
+			Logger.error(e, "There was an error connecting with Google Drive.  The bot will start, using the most recent cached list of spells (which may be no spells)"
+					+ "Check your internet connection, and make sure you have provided the client_secrets.json file."
+					+ "You may also try removing your cached credentials, which are stored in ~/.credentials/discord-rp-bot/StoredCredential on OSX/linux,"
 					+ "C:\\Users\\<username>.credentials\\discord-rp-bot\\StoredCredential on Windows.");
 			return;
 		}

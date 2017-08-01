@@ -3,6 +3,8 @@ package com.dreaminsteam.rpbot.commands;
 
 import java.sql.SQLException;
 
+import org.pmw.tinylog.Logger;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.utilities.DiceFormula;
@@ -75,7 +77,7 @@ public class DodgeCommand implements CommandExecutor{
 			try {
 				DatabaseUtil.getPlayerDao().createOrUpdate(currentPlayer);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				Logger.error(e, "Error updating player");
 				ret.append("\n **Error - destiny points may not be properly updated**");
 			}
 		}

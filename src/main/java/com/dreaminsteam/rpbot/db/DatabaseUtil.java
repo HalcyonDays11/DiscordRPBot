@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
 import com.dreaminsteam.rpbot.db.models.Spellbook;
@@ -93,8 +95,7 @@ public class DatabaseUtil {
 			getPlayerDao().createOrUpdate(player);
 			return player;
 		}catch(Exception e){
-			System.out.println("Error querying for player: ");
-			e.printStackTrace();
+			Logger.error(e, "Error querying for player.");
 			return null;
 		}
 	}
@@ -108,8 +109,7 @@ public class DatabaseUtil {
 				return spellList.get(0);
 			}
 		}catch(Exception e){
-			System.out.println("Error querying for spell: ");
-			e.printStackTrace();
+			Logger.error(e, "Error querying for spell.");
 			return null;
 		}
 	}
@@ -124,8 +124,7 @@ public class DatabaseUtil {
 			}
 			return spellbook;
 		} catch (SQLException e) {
-			System.out.println("Error querying for spellbook: ");
-			e.printStackTrace();
+			Logger.error(e, "Error querying for spellbook, creating new one to replace it.");
 			return new Spellbook(player, spell);
 		}
 	}
@@ -134,8 +133,7 @@ public class DatabaseUtil {
 		try {
 			getSpellbookDao().createOrUpdate(spellbook);
 		} catch (SQLException e) {
-			System.out.println("Error saving spellbook: ");
-			e.printStackTrace();
+			Logger.error(e, "Error saving spellbook.");
 		}
 	}
 	

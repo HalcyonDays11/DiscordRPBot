@@ -3,6 +3,8 @@ package com.dreaminsteam.rpbot.commands;
 import java.sql.SQLException;
 import java.util.Date;
 
+import org.pmw.tinylog.Logger;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spellbook;
@@ -35,7 +37,7 @@ public class WorkoutCommand implements CommandExecutor{
 			DatabaseUtil.getPlayerDao().update(player);
 			return user.mention() + "  Great workout! You have **" + (agilityProgress + "/" + POINTS_PER_WORKOUT) + "** points toward your next bonus.";
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Logger.error(e, "Error updating player");
 			return user.mention() + "  Uh... the gym wasn't working... try working out again.";
 		}
 	}
