@@ -29,13 +29,14 @@ public class WorkoutCommand implements CommandExecutor{
 		}
 		
 		int currentAgility = player.getCurrentAgility();
-		int agilityProgress = player.getCurrentAgility() / POINTS_PER_WORKOUT;
+		int agilityProgress = player.getCurrentAgility() % POINTS_PER_WORKOUT;
+		int agilityModifier = player.getCurrentAgility() / POINTS_PER_WORKOUT;
 		player.setCurrentAgility(currentAgility + 1);
 		player.updateLastWorkoutDate(new Date());
 		
 		try {
 			DatabaseUtil.getPlayerDao().update(player);
-			return user.mention() + "  Great workout! You have **" + (agilityProgress + "/" + POINTS_PER_WORKOUT) + "** points toward your next bonus.";
+			return user.mention() + "  Great workout! Your agility bonus is **" + agilityModifier + "** and you have **" + (agilityProgress + "/" + POINTS_PER_WORKOUT) + "** points toward your next bonus.";
 		} catch (SQLException e) {
 			Logger.error(e, "Error updating player");
 			return user.mention() + "  Uh... the gym wasn't working... try working out again.";

@@ -69,6 +69,10 @@ public class RPBot {
 	}
 	
 	private void initializeLoggingFramework(){
+		File logDir = new File("./logs");
+		if(!logDir.exists()){			
+			logDir.mkdirs();
+		}
 		Configurator.defaultConfig()
 			.writer(new org.pmw.tinylog.writers.FileWriter("./logs/rpbot.log"))
 			.addWriter(new ConsoleWriter())
