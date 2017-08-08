@@ -52,9 +52,10 @@ public class RestorePracticeCommand implements CommandExecutor{
 			DatabaseUtil.getPlayerDao().update(player);			
 		}catch(SQLException e){
 			Logger.error(e);
+			return user.mention() + "  something went wrong";
 		}
 		
-		return user.mention() + "  Success! " + player.getName() + " now has **" + player.getAvailableDestinyPoints() + "** destiny points for today.";
+		return user.mention() + "  Success! " + player.getName() + " can practice spells again for today.";
 		
 	}
 
