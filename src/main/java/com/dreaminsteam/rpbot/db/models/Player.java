@@ -65,7 +65,7 @@ public class Player {
 		this.canWorkoutToday = workout;
 	}
 	
-	public boolean canPracticeToday(Date today){
+	public boolean canPracticeToday(){
 		return canPracticeToday;
 	}
 	

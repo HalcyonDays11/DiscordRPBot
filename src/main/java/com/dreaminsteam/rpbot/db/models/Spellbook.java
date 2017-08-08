@@ -57,22 +57,6 @@ public class Spellbook {
 		return spell;
 	}
 	
-	public boolean hasPracticedToday(Date today){
-		if(lastCastAttempt == null){
-			return false;
-		}
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(lastCastAttempt);
-		calendar.add(Calendar.DAY_OF_YEAR, 1);
-		
-		if(calendar.getTime().after(today)){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
 	public boolean castAttemptsAtMax(){
 		return castAttemptsToday >= MAX_ATTEMPTS_PER_DAY;
 	}
@@ -83,14 +67,9 @@ public class Spellbook {
 	
 	public void practiceSpell(boolean success, Date now){
 		boolean practiced = false;
-		if(hasPracticedToday(now)){
-			if(!practiceSuccessful && castAttemptsToday < MAX_ATTEMPTS_PER_DAY){
-				castAttemptsToday++;
-				practiced = true;
-			}
-		}else{
-			castAttemptsToday = 1;
+		if(castAttemptsToday < MAX_ATTEMPTS_PER_DAY){
 			practiced = true;
+			castAttemptsToday++;
 		}
 		
 		if(practiced){

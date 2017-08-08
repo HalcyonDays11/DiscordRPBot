@@ -12,8 +12,11 @@ import java.util.TimeZone;
 
 import javax.swing.text.DateFormatter;
 
+import org.pmw.tinylog.Logger;
+
 import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
+import com.dreaminsteam.rpbot.db.models.Spellbook;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.UpdateBuilder;
 
@@ -90,7 +93,7 @@ public class PlayerResetHandler {
 			UpdateBuilder<Player,String> updateColumn = dao.updateBuilder().updateColumnValue("usedDestiny", 0);
 			dao.update(updateColumn.prepare());
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			Logger.error(e1);
 		}
 	}
 	
@@ -100,17 +103,24 @@ public class PlayerResetHandler {
 			UpdateBuilder<Player,String> updateColumn = dao.updateBuilder().updateColumnValue("canWorkoutToday", true);
 			dao.update(updateColumn.prepare());
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			Logger.error(e1);
 		}
 	}
 	
 	public static void resetPractice(){
-		Dao<Player, String> dao = DatabaseUtil.getPlayerDao();
+		Dao<Player, String> playerDao = DatabaseUtil.getPlayerDao();
 		try {
-			UpdateBuilder<Player,String> updateColumn = dao.updateBuilder().updateColumnValue("canPracticeToday", true);
-			dao.update(updateColumn.prepare());
+			UpdateBuilder<Player,String> updateColumn = playerDao.updateBuilder().updateColumnValue("canPracticeToday", true);
+			playerDao.update(updateColumn.prepare());
 		} catch (SQLException e1) {
-			e1.printStackTrace();
+			Logger.error(e1);
+		}
+		Dao<Spellbook, Long> spellbookDao = DatabaseUtil.getSpellbookDao();
+		try{
+			UpdateBuilder<Spellbook, Long> updateColumn = spellbookDao.updateBuilder().updateColumnValue("castAttemptsToday", 0);
+			spellbookDao.update(updateColumn.prepare());
+		} catch(SQLException e1) {
+			Logger.error(e1);
 		}
 	}
 	

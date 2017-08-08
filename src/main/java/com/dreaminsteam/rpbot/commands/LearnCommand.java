@@ -35,7 +35,7 @@ public class LearnCommand implements CommandExecutor{
 		}
 		
 		Date today = new Date();
-		if(!player.canPracticeToday(today)){
+		if(!player.canPracticeToday()){
 			return user.mention() + "  You've already practiced a spell today! Try again tomorrow.";
 		}
 		
