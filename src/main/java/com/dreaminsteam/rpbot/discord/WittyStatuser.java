@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.pmw.tinylog.Logger;
+
 import it.sauronsoftware.cron4j.Scheduler;
 
 public class WittyStatuser {
@@ -58,7 +60,7 @@ public class WittyStatuser {
 		int nextInt = rand.nextInt(wittyStatus.size());
 		String status = wittyStatus.get(nextInt);
 		bot.setStatus(status);
-		System.out.println("Changed status to: " + status);
+		Logger.debug("Changed status to: " + status);
 	}
 	
 }

@@ -74,7 +74,7 @@ public class RPBot {
 			logDir.mkdirs();
 		}
 		Configurator.defaultConfig()
-			.writer(new org.pmw.tinylog.writers.FileWriter("./logs/rpbot.log"))
+			.writer(new org.pmw.tinylog.writers.FileWriter("./logs/rpbot.log", true, true))
 			.addWriter(new ConsoleWriter())
 			.level(Level.INFO)
 			.activate();

@@ -27,7 +27,7 @@ public class SpellParser {
 		ByteArrayOutputStream outputStream;
 		try {
 			outputStream = GoogleDriveIntegration.getSpellListAsOutputStream();
-			System.out.println("successfully connected to Google Drive for the spell list");
+			Logger.info("successfully connected to Google Drive for the spell list");
 		} catch (Exception e){
 			Logger.error(e, "There was an error connecting with Google Drive.  The bot will start, using the most recent cached list of spells (which may be no spells)"
 					+ "Check your internet connection, and make sure you have provided the client_secrets.json file."
