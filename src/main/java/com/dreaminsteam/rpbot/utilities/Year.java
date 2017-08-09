@@ -48,8 +48,8 @@ public enum Year {
 	}
 	
 	public static Year getYearFromRoleList(List<String> roles){
-		for(String role : roles){
-			for(Year year : Year.values()){
+		for(Year year : Year.values()){
+			for(String role : roles){
 				if(role.equalsIgnoreCase(year.getRoleName())){
 					return year;
 				}
