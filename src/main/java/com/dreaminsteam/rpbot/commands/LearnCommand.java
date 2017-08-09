@@ -34,6 +34,8 @@ public class LearnCommand implements CommandExecutor{
 			return null;
 		}
 		
+		spellStr = spellStr.toLowerCase();
+		
 		Date today = new Date();
 		if(!player.canPracticeToday()){
 			return user.mention() + "  You've already practiced a spell today! Try again tomorrow.";
