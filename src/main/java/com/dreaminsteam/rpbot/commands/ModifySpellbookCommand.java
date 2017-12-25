@@ -8,6 +8,8 @@ import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
 import com.dreaminsteam.rpbot.db.models.Spellbook;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -41,6 +43,13 @@ public class ModifySpellbookCommand implements CommandExecutor{
 		
 		Spell spell = DatabaseUtil.getSpellDao().queryForId(incantation);
 		if(spell == null){
+			if(newModifierStr.equalsIgnoreCase("0")){
+				QueryBuilder<Spellbook,Long> queryBuilder = DatabaseUtil.getSpellbookDao().queryBuilder();
+				Where<Spellbook,Long> query = queryBuilder.where().eq("player_id", player.getSnowflakeId()).and().eq("spell_id", spell.getIncantation());
+				Spellbook spellbook = query.queryForFirst();
+				DatabaseUtil.getSpellbookDao().delete(spellbook);
+				return "Unmatched spellbook removed.";
+			}
 			return "I can't find a spell with that incanataion... try using **!lookup** to get a list of spells.";
 		}
 		

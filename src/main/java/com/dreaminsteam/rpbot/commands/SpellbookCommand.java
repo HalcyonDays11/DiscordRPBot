@@ -7,7 +7,10 @@ import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.dreaminsteam.rpbot.db.models.Player;
 import com.dreaminsteam.rpbot.db.models.Spell;
 import com.dreaminsteam.rpbot.db.models.Spellbook;
+import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.FieldType;
+import com.j256.ormlite.table.TableInfo;
 
 import de.btobastian.sdcf4j.Command;
 import de.btobastian.sdcf4j.CommandExecutor;
@@ -73,12 +76,13 @@ public class SpellbookCommand implements CommandExecutor{
 	
 	private void iterateThroughSpellbooks(List<Spellbook> spellbooks, IPrivateChannel pmChannel, boolean other){
 		if(spellbooks.isEmpty()){
-			pmChannel.sendMessage(other ? "They" : "You" + " have not practiced any spells.");
+			pmChannel.sendMessage((other ? "They" : "You") + " have not practiced any spells.");
 		}else{
-			StringBuilder sb = new StringBuilder(other ? "They" : "You" + " have practiced the following spells: \n"); //this is broke, but I think it's a syntax error, and I don't know enough about it to know what the issue is. When if Returns "They", it doesn't return the rest of the line, (Haven't practiced yada yada)
+			StringBuilder sb = new StringBuilder((other ? "They" : "You") + " have practiced the following spells: \n");
+			boolean success = true;
 			for(int i = 0; i < spellbooks.size(); i++){
 				Spellbook spellbook = spellbooks.get(i);
-				listIndividualSpellbook(spellbook, sb);
+				success &= listIndividualSpellbook(spellbook, sb);
 				if(i < spellbooks.size() - 1){
 					sb.append("\n");
 				}
@@ -87,14 +91,31 @@ public class SpellbookCommand implements CommandExecutor{
 					sb = new StringBuilder();
 				}
 			}
+			
+			if(!success && !other){
+				sb.append("\n\nAt least one of your spellbooks points to a spell that no longer exists.\nPlease have a professor examine and correct your spellbook.");
+			}
+			
 			if(!sb.toString().isEmpty()){				
 				pmChannel.sendMessage(sb.toString());
 			}
 		}
 	}
 	
-	private void listIndividualSpellbook(Spellbook spellbook, StringBuilder sb){
+	private boolean listIndividualSpellbook(Spellbook spellbook, StringBuilder sb){
 		Spell spell = spellbook.getSpell();
+		if(spell == null){
+			try{
+				TableInfo<Spellbook, Long> tableInfo = ((BaseDaoImpl<Spellbook, Long>)DatabaseUtil.getSpellbookDao()).getTableInfo();
+				FieldType spellField = tableInfo.getFieldTypeByColumnName("spell_id");
+				String spellName = spellField.extractJavaFieldValue(spellbook).toString();
+				int individualModifier = spellbook.getIndividualModifier();
+				sb.append("SPELL REFERENCE MISSING : " + spellName + " - modifier would have been " + individualModifier);
+			}catch(Throwable t){
+				t.printStackTrace();
+			}
+			return false;
+		}
 		int individualModifier = spellbook.getIndividualModifier(spell.getDC() - 1);
 		int progressTowardsNextBonus = spellbook.getProgressTowardsNextBonus();
 		
@@ -102,6 +123,7 @@ public class SpellbookCommand implements CommandExecutor{
 		sb.append("(DC" + spell.getDC() + ")  ");
 		sb.append("Personal modifier is **+" + individualModifier + "** with ");
 		sb.append(" **" + progressTowardsNextBonus + "/" + Spellbook.POINTS_PER_BONUS + "** towards next bonus.");
+		return true;
 	}
 	
 }
