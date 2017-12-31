@@ -20,12 +20,12 @@ public class WorkoutCommand implements CommandExecutor{
 	public static final int POINTS_PER_WORKOUT = 28;
 
 	
-	@Command(aliases = {"!workout"}, description="Get in your daily workout and increase you ability to dodge.", usage="!workout")
+	@Command(aliases = {"!workout"}, description="Please use the new States bot! use s!help to learn more!", usage="!workout")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
 		if(!player.canWorkoutToday()){
-			return user.mention() + "  You're going to pull something! You've already worked out once today.";
+			return user.mention() + "  You should try out new Stats Bot! Use s!help to learn more! (Antiquated info: You're going to pull something! You've already worked out once today.)";
 		}
 		
 		int currentAgility = player.getCurrentAgility();
@@ -36,7 +36,7 @@ public class WorkoutCommand implements CommandExecutor{
 		
 		try {
 			DatabaseUtil.getPlayerDao().update(player);
-			return user.mention() + "  Great workout! Your agility bonus is **" + agilityModifier + "** and you have **" + (agilityProgress + "/" + POINTS_PER_WORKOUT) + "** points toward your next bonus.";
+			return user.mention() + "  You should try out new Stats Bot! Use s!help to learn more! (Antiquated info: Great workout! Your agility bonus is **" + agilityModifier + "** and you have **" + (agilityProgress + "/" + POINTS_PER_WORKOUT) + "** points toward your next bonus.)";
 		} catch (SQLException e) {
 			Logger.error(e, "Error updating player");
 			return user.mention() + "  Uh... the gym wasn't working... try working out again.";
