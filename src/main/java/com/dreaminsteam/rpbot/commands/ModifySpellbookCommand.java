@@ -45,7 +45,7 @@ public class ModifySpellbookCommand implements CommandExecutor{
 		if(spell == null){
 			if(newModifierStr.equalsIgnoreCase("0")){
 				QueryBuilder<Spellbook,Long> queryBuilder = DatabaseUtil.getSpellbookDao().queryBuilder();
-				Where<Spellbook,Long> query = queryBuilder.where().eq("player_id", player.getSnowflakeId()).and().eq("spell_id", spell.getIncantation());
+				Where<Spellbook,Long> query = queryBuilder.where().eq("player_id", player.getSnowflakeId()).and().eq("spell_id", incantation);
 				Spellbook spellbook = query.queryForFirst();
 				DatabaseUtil.getSpellbookDao().delete(spellbook);
 				return "Unmatched spellbook removed.";
