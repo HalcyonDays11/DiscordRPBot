@@ -24,13 +24,19 @@ public class ListPlayersCommand implements CommandExecutor{
 		sb.append("Current players: \n");
 		int count = 0;
 		for (Player player : DatabaseUtil.getPlayerDao().queryForAll()) {
-			sb.append("**" + player.getSnowflakeId() + "**: " + player.getName() + ", " + player.getCurrentYear().getPrettyName() + "\n");
-			count++;
-			if(count == 50){
-				count = 0;
-				pmChannel.sendMessage(sb.toString());
-				sb = new StringBuilder();
+			if(player != null){
+				String snowflakeId = player.getSnowflakeId();
+				String playerName = player.getName();
+				String currentYear = player.getCurrentYear() != null ? player.getCurrentYear().getPrettyName() : " - MISSING YEAR!!!! ---";
+				sb.append("**" + snowflakeId + "**: " + playerName + ", " + currentYear + "\n");
+				count++;
+				if(count == 50){
+					count = 0;
+					pmChannel.sendMessage(sb.toString());
+					sb = new StringBuilder();
+				}
 			}
+			
 		}
 		if(count > 0){
 			pmChannel.sendMessage(sb.toString());
