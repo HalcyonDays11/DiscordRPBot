@@ -9,6 +9,7 @@ import com.dreaminsteam.rpbot.db.models.Spell;
 import com.dreaminsteam.rpbot.db.models.Spellbook;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.table.TableInfo;
 
@@ -106,9 +107,8 @@ public class SpellbookCommand implements CommandExecutor{
 		Spell spell = spellbook.getSpell();
 		if(spell == null){
 			try{
-				TableInfo<Spellbook, Long> tableInfo = ((BaseDaoImpl<Spellbook, Long>)DatabaseUtil.getSpellbookDao()).getTableInfo();
-				FieldType spellField = tableInfo.getFieldTypeByColumnName("spell_id");
-				String spellName = spellField.extractJavaFieldValue(spellbook).toString();
+				GenericRawResults<String[]> queryRaw = DatabaseUtil.getSpellbookDao().queryRaw("select spell_id from spellbook where id=" + spellbook.getId());
+				String spellName = queryRaw.getFirstResult()[0];
 				int individualModifier = spellbook.getIndividualModifier();
 				sb.append("SPELL REFERENCE MISSING : " + spellName + " - modifier would have been " + individualModifier);
 			}catch(Throwable t){

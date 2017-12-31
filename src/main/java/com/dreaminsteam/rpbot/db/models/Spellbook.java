@@ -33,8 +33,12 @@ public class Spellbook {
 		this.spell = spell;
 	}
 	
+	public Long getId() {
+		return id;
+	}
+	
 	public int getIndividualModifier(){
-		return getIndividualModifier(spell.getDC());
+		return getIndividualModifier(spell != null ? spell.getDC() : Integer.MAX_VALUE);
 	}
 	
 	public boolean hasMastered(){
