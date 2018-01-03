@@ -18,7 +18,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class DodgeCommand implements CommandExecutor{
 	
-	@Command(aliases = {"!dodge"}, description="Please use the new States bot! use s!help to learn more!", usage = "!dodge <A|B> <number of destiny points>, e.g. *!dodge B 1*", async = true)
+	@Command(aliases = {"!dodge"}, description="Please use the new stats bot! use s!help to learn more!", usage = "!dodge <A|B> <number of destiny points>, e.g. *!dodge B 1*", async = true)
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player currentPlayer = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		

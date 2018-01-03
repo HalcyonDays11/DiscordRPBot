@@ -1,5 +1,7 @@
 package com.dreaminsteam.rpbot.commands;
 
+import java.util.List;
+
 import com.dreaminsteam.rpbot.RPBot;
 
 import de.btobastian.sdcf4j.Command;
@@ -15,11 +17,19 @@ public class HelpCommand implements CommandExecutor {
 	public String printAvailableCommands(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		StringBuilder sb = new StringBuilder();
 		sb.append("things you can do: \n");
+		int i = 1;
 		for (SimpleCommand cmd : RPBot.getBotInstance().getCommands()){
 			sb.append("\t **" + cmd.getCommandAnnotation().aliases()[0] + "**: " + cmd.getCommandAnnotation().description() + "\n");
 			sb.append("\t \t Usage: " + cmd.getCommandAnnotation().usage());
 			sb.append("\n\n");
+			if(i++ % 10 == 0){
+				user.getOrCreatePMChannel().sendMessage(sb.toString());
+				sb = new StringBuilder();
+			}
 		}
-		return sb.toString();
+		if(sb.length() > 0){
+			user.getOrCreatePMChannel().sendMessage(sb.toString());
+		}
+		return user.mention() + " Command list has been PM'd to you.";
 	}
 }

@@ -20,7 +20,7 @@ public class WorkoutCommand implements CommandExecutor{
 	public static final int POINTS_PER_WORKOUT = 28;
 
 	
-	@Command(aliases = {"!workout"}, description="Please use the new States bot! use s!help to learn more!", usage="!workout")
+	@Command(aliases = {"!workout"}, description="Please use the new stats bot! use s!help to learn more!", usage="!workout")
 	public String onCommand(IChannel channel, IUser user, IDiscordClient apiClient, String command, String[] args){
 		Player player = DatabaseUtil.createOrUpdatePlayer(user, channel.getGuild());
 		
