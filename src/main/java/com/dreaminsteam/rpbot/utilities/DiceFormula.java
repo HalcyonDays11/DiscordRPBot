@@ -71,14 +71,19 @@ public class DiceFormula {
 			//If the dieRoll is empty, special case to just return 0.
 			return new RollResult(formula, true);
 		}
-		return new RollResult(formula, dieRoll, modifier, maxModifier, destiny);
+		
+		RollResult rollResult = new RollResult(formula, dieRoll, modifier, maxModifier, destiny);
+		//If they are in combat and rolled a natural 1, it's a natural miss.
+		rollResult.setNaturalMiss(inCombat && (rollResult.getTotalNoModifier() <= 1));
+		
+		return rollResult;
 	}
 	
 	public DiceFormula copy(){
 		return new DiceFormula(this.die, this.defaultModifier, this.penaltyBuffer);
 	}
 	
-	public static enum DiceType{ //list of DiceType. defined as name (D0) value (0) and placement in the list (0)
+	public static enum DiceType{ //list of DiceType. defined as name (D0)x value (0) and placement in the list (0)
 		D0(0), //This is 0
 		D1(1), //This is 1
 		D2(2), //This is 2

@@ -11,6 +11,7 @@ public class RollResult {
 	private int personalModifier;
 	private String rollFormula;
 	private boolean instaFail = false;
+	private boolean naturalMiss = false;
 	
 	private int theoreticalModifier;
 	
@@ -41,6 +42,12 @@ public class RollResult {
 		AtomicInteger result = new AtomicInteger(0);
 		diceRolls.stream().forEach(die -> result.addAndGet(die));
 		return result.addAndGet(modifier + personalModifier + destinyModifier);
+	}
+	
+	public int getTotalNoModifier() {
+		AtomicInteger result = new AtomicInteger(0);
+		diceRolls.stream().forEach(die -> result.addAndGet(die));
+		return result.get();
 	}
 	
 	public int getTheoreticalTotal(){
@@ -97,5 +104,13 @@ public class RollResult {
 
 	public boolean isInstaFail() {
 		return instaFail;
+	}
+	
+	public boolean isNaturalMiss() {
+		return naturalMiss;
+	}
+	
+	public void setNaturalMiss(boolean naturalMiss) {
+		this.naturalMiss = naturalMiss;
 	}
 }
