@@ -30,10 +30,11 @@ public class ListPlayersCommand implements CommandExecutor{
 				String currentYear = player.getCurrentYear() != null ? player.getCurrentYear().getPrettyName() : " - MISSING YEAR!!!! ---";
 				sb.append("**" + snowflakeId + "**: " + playerName + ", " + currentYear + "\n");
 				count++;
-				if(count == 25){
+				if(count == 30){
 					count = 0;
 					pmChannel.sendMessage(sb.toString());
 					sb = new StringBuilder();
+					Thread.sleep(2000);
 				}
 			}
 			
