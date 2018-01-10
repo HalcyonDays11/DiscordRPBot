@@ -118,10 +118,12 @@ public class CastCommand implements CommandExecutor{
 		StringBuilder ret = new StringBuilder();
 		
 		int difficultyCheck = spell.getDC();
-		if(result.isNaturalMiss()) {
-			ret.append(user.mention() + " ** Spell Naturally Missed! ** ");
-		}else if(result.getTotal() >= difficultyCheck){
-			ret.append(user.mention() + " ** Spell Succeeds! **");
+		if(result.getTotal() >= difficultyCheck){
+			if(result.isNaturalMiss()) {
+				ret.append(user.mention() + " ** Spell Naturally Missed! ** ");
+			}else {				
+				ret.append(user.mention() + " ** Spell Succeeds! **");
+			}
 		}else{
 			if(result.getTheoreticalTotal() >= difficultyCheck){
 				ret.append(user.mention() + " ** Spell Missed! **");
