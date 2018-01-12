@@ -3,7 +3,9 @@ package com.dreaminsteam.rpbot.commands;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
@@ -24,6 +26,7 @@ public class CastCommand implements CommandExecutor{
 	
 	public static String[] normalizeArgs(String[] args){
 		List<String> ret = new ArrayList<>();
+		args = replaceDumbQuotes(args);
 		String spellStr = args[0];
 		if(spellStr.startsWith("\"")){
 			String spellPiece = "";
@@ -42,6 +45,11 @@ public class CastCommand implements CommandExecutor{
 		}else{
 			return args;
 		}
+	}
+	
+	private static String[] replaceDumbQuotes(String[] args) {
+		List<String> collect = Arrays.stream(args).map((arg) -> { return arg.replaceAll("[\\u2018\\u2019]", "'").replaceAll("[\\u201C\\u201D]", "\""); }).collect(Collectors.toList());
+		return collect.toArray(new String[args.length]);
 	}
 	
 	@Command(aliases = {"!cast"}, description="Cast a spell, with (A)ssistance, (B)urden, in (C)ombat, non-(V)erbal, or (W)andless.", usage = "!cast [incantation] <A|B|C|V|W> <number of destiny points>, e.g. *!cast lumos A 1*", async = true)
