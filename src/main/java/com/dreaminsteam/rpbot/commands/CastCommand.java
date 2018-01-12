@@ -87,10 +87,11 @@ public class CastCommand implements CommandExecutor{
 		spellModifiers = spellModifiers.toLowerCase();
 		
 		boolean advantage = spellModifiers.contains("a");
-		boolean combat = spellModifiers.contains("c");
+		boolean combat = spellModifiers.contains("c") || spellModifiers.contains("d");
 		boolean burden = spellModifiers.contains("b");
 		boolean nonverbal = spellModifiers.contains("v");
 		boolean wandless = spellModifiers.contains("w");
+		boolean defensive = spellModifiers.contains("d");
 		
 		boolean hasSituation = advantage || combat || burden || nonverbal || wandless;
 		
@@ -127,7 +128,7 @@ public class CastCommand implements CommandExecutor{
 		
 		int difficultyCheck = spell.getDC();
 		if(result.getTotal() >= difficultyCheck){
-			if(result.isNaturalMiss()) {
+			if(result.isNaturalMiss() && !defensive && (difficultyCheck > player.getCurrentYear().getMasterableDC())) {
 				ret.append(user.mention() + " ** Spell Naturally Missed! ** ");
 			}else {				
 				ret.append(user.mention() + " ** Spell Succeeds! **");
