@@ -56,8 +56,8 @@ public class DiceFormula {
 		}
 		if(withBurden){
 			//Modifier bonus and possible bonus decrease by one point. 
-			modifier = modifier - 1;
-			maxModifier = maxModifier - 1;
+			modifier = modifier - (int)Math.ceil((standardModifier + 1) *.25);
+			maxModifier = maxModifier - (int)Math.ceil((standardModifier +1) *.25);
 		}
 		
 		//This will cap the dieToRoll... no smaller than 0, no bigger than the last DiceType value.
