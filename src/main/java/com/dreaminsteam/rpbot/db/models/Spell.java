@@ -9,6 +9,7 @@ public class Spell {
 	
 	@DatabaseField(id = true) private String incantation = "";
 	@DatabaseField private String prettyIncantation;
+	@DatabaseField private int yearvisible = -1;
 	@DatabaseField private String name = "";
 	@DatabaseField (dataType = DataType.LONG_STRING) private String description = "";
 	@DatabaseField private int dc = -1;
@@ -57,6 +58,14 @@ public class Spell {
 		this.dc = dc;
 	}
 	
+	public int getYearVisible() {
+		return yearvisible;
+	}
+
+	public void setYearVisible(int yearVisible) {
+		this.yearvisible = yearVisible;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

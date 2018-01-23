@@ -54,6 +54,7 @@ public class SpellParser {
 			
 			for (int i=0; i< firstLine.size(); i++){
 				String fieldname = firstLine.get(i).toLowerCase();
+				fieldname = fieldname.replaceAll(" ", "");
 				try {
 					Field field = Spell.class.getDeclaredField(fieldname);
 					fieldMap.put(i, field);
