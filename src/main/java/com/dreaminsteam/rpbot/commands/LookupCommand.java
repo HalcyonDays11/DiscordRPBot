@@ -67,7 +67,7 @@ public class LookupCommand implements CommandExecutor{
 		}
 	}
 	
-	private void listAllSpells(CloseableIterator<Spell> allSpells, IDiscordClient apiClient, IUser user) throws IOException {
+	private void listAllSpells(CloseableIterator<Spell> allSpells, IDiscordClient apiClient, IUser user) throws Exception {
 		StringBuilder ret = new StringBuilder();
 		int count = 0;
 		while (allSpells.hasNext()){
@@ -82,6 +82,7 @@ public class LookupCommand implements CommandExecutor{
 				apiClient.getOrCreatePMChannel(user).sendMessage(ret.toString());
 				count = 0;
 				ret = new StringBuilder();
+				Thread.sleep(2000);
 			}
 		}
 		allSpells.close();
