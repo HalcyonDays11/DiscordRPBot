@@ -7,15 +7,15 @@ public class DiceFormula {
 	private int defaultModifier; 
 	private int penaltyBuffer;
 	
-	public static final int BASE_ADVANTAGE_BONUS = 1;
+	public static final int BASE_ADVANTAGE_BONUS = 1; //adjusts die size, never below 0 or above 22
 	public static final int BASE_NONVERBAL_PENALTY = 6;
 	public static final int BASE_WANDLESS_PENALTY = 7;
 	
 	
 	public DiceFormula(DiceType die, int defaultModifier, int penaltyBuffer){ //shows how the properties are listed
 		this.die = die;
-		this.defaultModifier = defaultModifier;
-		this.penaltyBuffer = penaltyBuffer;
+		this.defaultModifier = defaultModifier; // the modifier you should have based on your year
+		this.penaltyBuffer = penaltyBuffer; //reduces the severity of non-verbal penalty for grad+
 	} 
 
 	public void setStandardModifier(int modifier){
