@@ -3,7 +3,7 @@ package com.dreaminsteam.rpbot.web.util;
 public class Path {
 
 	public static class Web {
-		public static final String INDEX = "/index";
+		public static final String INDEX = "/";
 		public static final String LOGIN = "/login";
 		public static final String LOGOUT = "/logout";
 		
