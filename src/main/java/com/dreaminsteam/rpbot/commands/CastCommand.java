@@ -122,7 +122,7 @@ public class CastCommand implements CommandExecutor{
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
 		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless, destinyPoints);
-		result.setPersonalModifier(spellbook.getTotalBonus(spell.getDC()));
+		result.setPersonalModifier(spellbook.getTotalBonus(spell.getDC()-1));
 		
 		StringBuilder ret = new StringBuilder();
 		
