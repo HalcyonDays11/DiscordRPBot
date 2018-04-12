@@ -95,7 +95,7 @@ public class LearnCommand implements CommandExecutor{
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
 		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless, destinyPoints);
-		result.setPersonalModifier(spellbook.getIndividualModifier(difficultyCheck));
+		result.setPersonalModifier(spellbook.getTotalBonus(difficultyCheck));
 		
 		StringBuilder ret = new StringBuilder();
 		boolean success = false;
@@ -113,6 +113,7 @@ public class LearnCommand implements CommandExecutor{
 		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 
 				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
 				" + " + result.getPersonalModifier() + 
+				(spellbook.getLinkBonus() > 0 ? (" (link bonus!)") : "") +
 				(destinyPoints > 0 ? (" + "  + destinyPoints + " destiny") : "") +
 				"***");
 		

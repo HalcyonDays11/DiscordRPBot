@@ -122,7 +122,7 @@ public class CastCommand implements CommandExecutor{
 		
 		DiceFormula formula = player.getCurrentYear().getDiceFormula();
 		RollResult result = formula.rollDiceWithModifiers(advantage, burden, combat, nonverbal, wandless, destinyPoints);
-		result.setPersonalModifier(spellbook.getIndividualModifier(spell.getDC()));
+		result.setPersonalModifier(spellbook.getTotalBonus(spell.getDC()));
 		
 		StringBuilder ret = new StringBuilder();
 		
@@ -146,7 +146,8 @@ public class CastCommand implements CommandExecutor{
 		ret.append("(You rolled **" + result.getTotal() + "** , " + spell.getPrettyIncantation() + " DC " + difficultyCheck + ")");
 		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 
 				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
-				" + " + result.getPersonalModifier() + 
+				" + " + result.getPersonalModifier() +
+				(spellbook.getLinkBonus() > 0 ? (" (link bonus!)") : "") +
 				(destinyPoints > 0 ? (" + "  + destinyPoints + " destiny") : "") +
 				"***");
 

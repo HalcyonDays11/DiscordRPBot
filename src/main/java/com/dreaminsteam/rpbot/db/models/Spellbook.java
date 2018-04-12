@@ -1,8 +1,14 @@
 package com.dreaminsteam.rpbot.db.models;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import com.dreaminsteam.rpbot.db.DatabaseUtil;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -23,6 +29,8 @@ public class Spellbook {
 	@DatabaseField private int castAttemptsToday = 0;
 	@DatabaseField private Date lastCastAttempt;
 	@DatabaseField private boolean practiceSuccessful;
+	
+	private transient List<SpellbookLink> spellbookLinks;
 	
 	public Spellbook(){
 		//ORMLite requires an empty constructor
@@ -82,6 +90,38 @@ public class Spellbook {
 			if(practiceSuccessful){
 				currentIndividualModifierPoints++;
 			}
+		}
+	}
+	
+	public synchronized int getTotalBonus(int maxModifier) {
+		return Math.min(maxModifier, (getLinkBonus() + currentIndividualModifierPoints)/POINTS_PER_BONUS);
+	}
+	
+	public synchronized int getLinkBonus() {
+		if(spellbookLinks == null) {
+			traverseSpellbookLinks();
+		}
+		
+		AtomicInteger total = new AtomicInteger(0);
+		spellbookLinks.forEach( link -> total.getAndAdd(link.getActualBonus()));
+		return total.get();
+	}
+	
+	private synchronized void traverseSpellbookLinks() {
+		Map<String, Double> spellLinkMap = spell.getSpellLinkMap();
+		spellbookLinks = new ArrayList<>();
+		if(spellLinkMap == null) {
+			return;
+		}
+		
+		for(Entry<String, Double> link : spellLinkMap.entrySet()) {
+			String incantation = link.getKey().replace(' ', '_').toLowerCase();
+			Spell spell = DatabaseUtil.findSpell(incantation);
+			if(spell == null) {
+				continue;
+			}
+			Spellbook linkedSpellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
+			spellbookLinks.add(new SpellbookLink(linkedSpellbook.currentIndividualModifierPoints, link.getValue()));
 		}
 	}
 
