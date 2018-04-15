@@ -121,7 +121,7 @@ public class Spellbook {
 				continue;
 			}
 			Spellbook linkedSpellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
-			spellbookLinks.add(new SpellbookLink(linkedSpellbook.currentIndividualModifierPoints, link.getValue()));
+			spellbookLinks.add(new SpellbookLink(linkedSpellbook.getIndividualModifier()*POINTS_PER_BONUS, link.getValue()));
 		}
 	}
 
