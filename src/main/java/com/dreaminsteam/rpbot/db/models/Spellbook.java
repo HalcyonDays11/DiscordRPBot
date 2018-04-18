@@ -46,7 +46,7 @@ public class Spellbook {
 	}
 	
 	public int getIndividualModifier(){
-		return getIndividualModifier(spell != null ? spell.getDC() : Integer.MAX_VALUE);
+		return getIndividualModifier(spell != null ? (spell.getDC() - 1) : Integer.MAX_VALUE);
 	}
 	
 	public boolean hasMastered(){
