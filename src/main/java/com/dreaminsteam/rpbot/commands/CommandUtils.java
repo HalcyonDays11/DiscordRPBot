@@ -9,7 +9,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class CommandUtils {
 
 	public static final String[] adminRoles = {"admin", "moderator"};
-	public static final String[] editorRoles = {"putWhateverHere"};
+	public static final String[] editorRoles = {"Grimoire"};
 	
 	public static boolean hasAdminRole(IUser user, IChannel channel){
 		return hasRole(user, channel, adminRoles);

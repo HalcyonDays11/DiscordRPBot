@@ -40,7 +40,8 @@ public class SpellbookCommand implements CommandExecutor{
 		
 		if(spellStr.matches("^[0-9]+$")){
 			boolean hasAdminRole = CommandUtils.hasAdminRole(user, channel);
-			if(!hasAdminRole){
+			boolean hasEditorRole = CommandUtils.hasEditorRole(user, channel);
+			if(!(hasAdminRole || hasEditorRole)){
 				return user.mention() + "  Woah, now... you can't just go looking at other people's spellbooks.";
 			}
 			listAllSpells(user, spellStr, true);
