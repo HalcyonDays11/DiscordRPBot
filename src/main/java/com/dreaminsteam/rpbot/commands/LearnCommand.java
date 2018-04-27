@@ -113,7 +113,7 @@ public class LearnCommand implements CommandExecutor{
 		ret.append("\n*" + result.getRollFormula() + " \u2192* ***" + result.getDiceRolls().toString() + 
 				(result.getModifier() >= 0 ? " + " : " - ") + Math.abs(result.getModifier()) + 
 				" + " + result.getPersonalModifier() + 
-				(spellbook.getLinkBonus() > 0 ? (" (link bonus!)") : "") +
+				(spellbook.getLinkBonus() != 0 ? (" (link bonus!)") : "") +
 				(destinyPoints > 0 ? (" + "  + destinyPoints + " destiny") : "") +
 				"***");
 		
