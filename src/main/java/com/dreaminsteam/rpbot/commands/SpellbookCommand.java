@@ -72,11 +72,15 @@ public class SpellbookCommand implements CommandExecutor{
 		if(other){
 			pmChannel.sendMessage("Spellbooks for player id: " + playerSnowflakeId);
 		}
-		iterateThroughSpellbooks(spellbooks, pmChannel, other);
+		long totalModCount = iterateThroughSpellbooks(spellbooks, pmChannel, other);
+		if(other) {
+			pmChannel.sendMessage(String.format("-- Total modifier count is %d %d/%d.", totalModCount/Spellbook.POINTS_PER_BONUS, totalModCount%Spellbook.POINTS_PER_BONUS, Spellbook.POINTS_PER_BONUS));
+		}
 		return user.mention() + "  Information has been DM'd to you.";
 	}
 	
-	private void iterateThroughSpellbooks(List<Spellbook> spellbooks, IPrivateChannel pmChannel, boolean other){
+	private long iterateThroughSpellbooks(List<Spellbook> spellbooks, IPrivateChannel pmChannel, boolean other){
+		long totalModCount = 0;
 		if(spellbooks.isEmpty()){
 			pmChannel.sendMessage((other ? "They" : "You") + " have not practiced any spells.");
 		}else{
@@ -85,6 +89,7 @@ public class SpellbookCommand implements CommandExecutor{
 			for(int i = 0; i < spellbooks.size(); i++){
 				Spellbook spellbook = spellbooks.get(i);
 				success &= listIndividualSpellbook(spellbook, sb);
+				totalModCount += spellbook.getModifierPoints(true);
 				if(i < spellbooks.size() - 1){
 					sb.append("\n");
 				}
@@ -102,6 +107,7 @@ public class SpellbookCommand implements CommandExecutor{
 				pmChannel.sendMessage(sb.toString());
 			}
 		}
+		return totalModCount;
 	}
 	
 	private boolean listIndividualSpellbook(Spellbook spellbook, StringBuilder sb){

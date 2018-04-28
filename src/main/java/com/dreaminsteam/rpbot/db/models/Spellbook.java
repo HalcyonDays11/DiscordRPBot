@@ -57,6 +57,14 @@ public class Spellbook {
 		return Math.min(maxModifier, currentIndividualModifierPoints/POINTS_PER_BONUS);
 	}
 	
+	public int getModifierPoints(boolean cap) {
+		if(!cap) {
+			return currentIndividualModifierPoints;
+		}else {
+			return Math.min(currentIndividualModifierPoints, getIndividualModifier() * POINTS_PER_BONUS);
+		}
+	}
+	
 	public int getProgressTowardsNextBonus(){
 		return currentIndividualModifierPoints % POINTS_PER_BONUS;
 	}
