@@ -61,7 +61,7 @@ public class Spellbook {
 		if(!cap) {
 			return currentIndividualModifierPoints;
 		}else {
-			return Math.min(currentIndividualModifierPoints, getIndividualModifier() * POINTS_PER_BONUS);
+			return Math.min(currentIndividualModifierPoints, (spell.getDC()-1) * POINTS_PER_BONUS);
 		}
 	}
 	

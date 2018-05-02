@@ -95,6 +95,11 @@ public class SpellbookCommand implements CommandExecutor{
 				}
 				if(i > 0 && i % 15 == 0){
 					pmChannel.sendMessage(sb.toString());
+					try{
+						Thread.sleep(1000);
+					}catch(InterruptedException e) {
+						return totalModCount;
+					}
 					sb = new StringBuilder();
 				}
 			}
