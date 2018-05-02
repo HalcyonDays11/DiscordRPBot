@@ -96,7 +96,7 @@ public class SpellbookCommand implements CommandExecutor{
 				if(i > 0 && i % 15 == 0){
 					pmChannel.sendMessage(sb.toString());
 					try{
-						Thread.sleep(1000);
+						Thread.sleep(2000);
 					}catch(InterruptedException e) {
 						return totalModCount;
 					}
