@@ -41,6 +41,10 @@ public class DiscordBot{
 		discordClient = builder.build();
 		discordClient.login();
 		cmdHandler = new Discord4JHandler(discordClient);
+		
+		if(System.getProperty("devModePrefix") != null) {
+			cmdHandler.setDefaultPrefix(System.getProperty("devModePrefix"));
+		}
 	}
 	
 	public void setStatus(String status){
