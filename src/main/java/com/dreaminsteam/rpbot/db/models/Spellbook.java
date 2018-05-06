@@ -58,7 +58,7 @@ public class Spellbook {
 	}
 	
 	public int getModifierPoints(boolean cap) {
-		if(!cap) {
+		if(!cap || spell == null) {
 			return currentIndividualModifierPoints;
 		}else {
 			return Math.min(currentIndividualModifierPoints, (spell.getDC()-1) * POINTS_PER_BONUS);
@@ -129,7 +129,7 @@ public class Spellbook {
 				continue;
 			}
 			Spellbook linkedSpellbook = DatabaseUtil.getOrCreateSpellbook(player, spell);
-			spellbookLinks.add(new SpellbookLink(linkedSpellbook.getIndividualModifier()*POINTS_PER_BONUS, link.getValue()));
+			spellbookLinks.add(new SpellbookLink(linkedSpellbook.getModifierPoints(true), link.getValue()));
 		}
 	}
 

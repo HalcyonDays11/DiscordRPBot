@@ -88,8 +88,11 @@ public class SpellbookCommand implements CommandExecutor{
 			boolean success = true;
 			for(int i = 0; i < spellbooks.size(); i++){
 				Spellbook spellbook = spellbooks.get(i);
-				success &= listIndividualSpellbook(spellbook, sb);
-				totalModCount += spellbook.getModifierPoints(true);
+				boolean listSpellbookSuccess = listIndividualSpellbook(spellbook, sb);
+				success &= listSpellbookSuccess;
+				if(listSpellbookSuccess) {					
+					totalModCount += spellbook.getModifierPoints(true);
+				}
 				if(i < spellbooks.size() - 1){
 					sb.append("\n");
 				}
